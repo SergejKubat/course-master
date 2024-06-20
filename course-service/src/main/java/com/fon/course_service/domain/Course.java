@@ -47,6 +47,7 @@ public class Course {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
