@@ -105,7 +105,13 @@ public class ReviewServiceImpl implements ReviewService {
                 () -> new ResourceNotFoundException("Review", "id", String.valueOf(id))
         );
 
+        // get course
+        Course course = review.getCourse();
+
+        // delete review
         reviewRepository.delete(review);
+
+        setNewAverageRating(course);
     }
 
     private void setNewAverageRating(Course course) {

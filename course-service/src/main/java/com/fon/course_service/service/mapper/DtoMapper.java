@@ -1,7 +1,7 @@
 package com.fon.course_service.service.mapper;
 
-import com.fon.course_service.domain.*;
 import com.fon.course_service.domain.Module;
+import com.fon.course_service.domain.*;
 import com.fon.course_service.dto.response.category.CategoriesResponse;
 import com.fon.course_service.dto.response.category.CategoryResponse;
 import com.fon.course_service.dto.response.course.CourseResponse;
