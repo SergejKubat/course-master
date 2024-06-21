@@ -1,18 +1,16 @@
 package com.fon.course_service.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "category")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
@@ -29,10 +27,12 @@ public class Category {
     @Column(name = "thumbnail_url", nullable = false)
     private String thumbnailUrl;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)

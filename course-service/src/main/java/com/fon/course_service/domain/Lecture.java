@@ -1,17 +1,15 @@
 package com.fon.course_service.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "lecture")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Lecture {
@@ -31,10 +29,12 @@ public class Lecture {
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
