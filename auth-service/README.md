@@ -1,6 +1,6 @@
-# Course Service
+# Auth Service
 
-Spring Boot service designed to manage categories, courses, modules, lectures and reviews.
+Spring Boot service designed to manage users, roles and authentication.
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ git clone https://github.com/SergejKubat/course-master
 Change into the project directory:
 
 ```bash
-cd course-master/course-service
+cd course-master/auth-service
 ```
 
 ## Build and Run
@@ -48,6 +48,6 @@ mvn spring-boot:run
 
 ## Endpoints
 
-The application will start on: http://localhost:8081.
+The application will start on: http://localhost:8082.
 
-OpenAPI documentation: http://localhost:8081/swagger-ui.html
+OpenAPI documentation: http://localhost:8082/swagger-ui.html
