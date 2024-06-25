@@ -3,8 +3,8 @@ package com.fon.auth_service.exception;
 import org.springframework.http.HttpStatus;
 
 public class AuthServiceException extends RuntimeException {
-    private HttpStatus httpStatus;
-    private String message;
+    private final HttpStatus httpStatus;
+    private final String message;
 
     public AuthServiceException(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;

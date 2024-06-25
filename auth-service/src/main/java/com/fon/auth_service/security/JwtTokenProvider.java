@@ -51,7 +51,7 @@ public class JwtTokenProvider {
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (SignatureException ex){
+        } catch (SignatureException ex) {
             throw new AuthServiceException(HttpStatus.BAD_REQUEST, "Invalid JWT signature.");
         } catch (MalformedJwtException ex) {
             throw new AuthServiceException(HttpStatus.BAD_REQUEST, "Invalid JWT token.");
@@ -71,10 +71,6 @@ public class JwtTokenProvider {
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
     }
 
     private Key getSignInKey() {
