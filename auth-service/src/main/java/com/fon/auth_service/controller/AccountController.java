@@ -1,5 +1,6 @@
 package com.fon.auth_service.controller;
 
+import com.fon.auth_service.dto.request.ChangePasswordRequest;
 import com.fon.auth_service.dto.request.UpdateAccountRequest;
 import com.fon.auth_service.dto.response.AccountResponse;
 import com.fon.auth_service.service.AccountService;
@@ -19,6 +20,11 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<AccountResponse> getCurrentAccount() {
+        return new ResponseEntity<>(accountService.getCurrent(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponse> getById(@PathVariable(value = "id") long id) {
         return new ResponseEntity<>(accountService.getById(id), HttpStatus.OK);
@@ -29,5 +35,12 @@ public class AccountController {
             @PathVariable(value = "id") long id,
             @RequestBody UpdateAccountRequest updateAccountRequest) {
         return new ResponseEntity<>(accountService.update(id, updateAccountRequest), HttpStatus.OK);
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        accountService.changePassword(changePasswordRequest);
+
+        return new ResponseEntity<>("Password is successfully changed.", HttpStatus.OK);
     }
 }

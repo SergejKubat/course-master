@@ -1,5 +1,6 @@
 package com.fon.auth_service.service;
 
+import com.fon.auth_service.dto.request.ChangePasswordRequest;
 import com.fon.auth_service.dto.request.RegisterRequest;
 import com.fon.auth_service.dto.request.UpdateAccountRequest;
 import com.fon.auth_service.dto.response.AccountResponse;
@@ -12,4 +13,6 @@ public interface AccountService {
     AccountResponse create(RegisterRequest registerRequest);
 
     AccountResponse update(long id, UpdateAccountRequest updateUserRequest);
+
+    void changePassword(ChangePasswordRequest changePasswordRequest);
 }

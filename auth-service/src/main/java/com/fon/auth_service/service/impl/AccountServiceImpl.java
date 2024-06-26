@@ -2,6 +2,7 @@ package com.fon.auth_service.service.impl;
 
 import com.fon.auth_service.domain.Account;
 import com.fon.auth_service.domain.Role;
+import com.fon.auth_service.dto.request.ChangePasswordRequest;
 import com.fon.auth_service.dto.request.RegisterRequest;
 import com.fon.auth_service.dto.request.UpdateAccountRequest;
 import com.fon.auth_service.dto.response.AccountResponse;
@@ -11,6 +12,8 @@ import com.fon.auth_service.repository.AccountRepository;
 import com.fon.auth_service.repository.RoleRepository;
 import com.fon.auth_service.service.AccountService;
 import com.fon.auth_service.service.mapper.DtoMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +50,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse getCurrent() {
-        return null;
+        Account currentAccount = getCurrentAccount();
+
+        return dtoMapper.mapToAccountResponse(currentAccount);
     }
 
     @Override
@@ -101,5 +106,30 @@ public class AccountServiceImpl implements AccountService {
         account.setAvatar(updateUserRequest.getAvatar());
 
         return dtoMapper.mapToAccountResponse(accountRepository.save(account));
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        Account currentAccount = getCurrentAccount();
+
+        // check if old password is correct
+        if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), currentAccount.getPassword())) {
+            throw new BadRequestException("Old password is not correct.");
+        }
+
+        // change password
+        currentAccount.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+
+        accountRepository.save(currentAccount);
+    }
+
+    private Account getCurrentAccount() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String currentUsername = authentication.getName();
+
+        return accountRepository.findByUsernameOrEmail(currentUsername, currentUsername).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "username", currentUsername)
+        );
     }
 }

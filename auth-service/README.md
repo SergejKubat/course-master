@@ -48,6 +48,6 @@ mvn spring-boot:run
 
 ## Endpoints
 
-The application will start on: http://localhost:8082.
+The application will start on: http://localhost:8081.
 
-OpenAPI documentation: http://localhost:8082/swagger-ui.html
+OpenAPI documentation: http://localhost:8081/swagger-ui/index.html

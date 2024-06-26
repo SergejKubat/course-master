@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmail(), loginRequest.getPassword()
-        ));
+                ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
