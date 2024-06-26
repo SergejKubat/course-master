@@ -18,7 +18,7 @@ public class OpenAPIConfig {
         List<Server> servers = new ArrayList<>();
 
         servers.add(new Server()
-                .url("http://localhost:8081")
+                .url("http://localhost:8082")
                 .description("Course Service API development server."));
 
         return new OpenAPI()
