@@ -73,6 +73,10 @@ public class JwtTokenProvider {
         return claimsResolver.apply(claims);
     }
 
+    public long getExpirationTime() {
+        return jwtExpirationInMilliseconds;
+    }
+
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);

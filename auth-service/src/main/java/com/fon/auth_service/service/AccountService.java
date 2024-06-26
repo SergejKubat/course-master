@@ -11,5 +11,5 @@ public interface AccountService {
 
     AccountResponse create(RegisterRequest registerRequest);
 
-    AccountResponse update(UpdateAccountRequest updateUserRequest);
+    AccountResponse update(long id, UpdateAccountRequest updateUserRequest);
 }
