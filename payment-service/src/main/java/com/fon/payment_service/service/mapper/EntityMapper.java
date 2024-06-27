@@ -9,9 +9,8 @@ public class EntityMapper {
     public Transaction mapToTransactionEntity(TransactionRequest transactionRequest) {
         Transaction transaction = new Transaction();
 
-        transaction.setStudentId(transactionRequest.getStudentId());
+        transaction.setAccountId(transactionRequest.getAccountId());
         transaction.setCourseId(transactionRequest.getCourseId());
-        transaction.setAmount(transactionRequest.getAmount());
         transaction.setCurrency(transactionRequest.getCurrency());
         transaction.setPaymentMethod(transactionRequest.getPaymentMethod());
 

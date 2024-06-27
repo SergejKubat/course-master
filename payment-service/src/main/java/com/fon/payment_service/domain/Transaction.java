@@ -18,8 +18,8 @@ public class Transaction {
     @Id
     private String id;
 
-    @Field(name = "student_id")
-    private long studentId;
+    @Field(name = "account_id")
+    private long accountId;
 
     @Field(name = "course_id")
     private long courseId;

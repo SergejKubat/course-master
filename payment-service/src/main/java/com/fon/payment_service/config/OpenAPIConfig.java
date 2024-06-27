@@ -1,4 +1,4 @@
-package com.fon.payment_service.configure;
+package com.fon.payment_service.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

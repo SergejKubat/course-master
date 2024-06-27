@@ -10,7 +10,7 @@ public class DtoMapper {
         TransactionResponse transactionResponse = new TransactionResponse();
 
         transactionResponse.setId(transaction.getId());
-        transactionResponse.setStudentId(transaction.getStudentId());
+        transactionResponse.setAccountId(transaction.getAccountId());
         transactionResponse.setCourseId(transaction.getCourseId());
         transactionResponse.setCreatedAt(transaction.getCreatedAt());
 

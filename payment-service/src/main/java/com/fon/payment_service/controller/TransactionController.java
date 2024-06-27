@@ -21,16 +21,23 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping("/students/{studentId}/transactions")
-    public ResponseEntity<List<TransactionResponse>> getAllByStudentId(
-            @PathVariable(value = "studentId") long studentId) {
-        return new ResponseEntity<>(transactionService.getAllByStudentId(studentId), HttpStatus.OK);
+    @GetMapping("/accounts/{accountId}/transactions")
+    public ResponseEntity<List<TransactionResponse>> getAllByAccountId(
+            @PathVariable(value = "accountId") long accountId) {
+        return new ResponseEntity<>(transactionService.getAllByAccountId(accountId), HttpStatus.OK);
     }
 
     @GetMapping("/courses/{courseId}/transactions")
     public ResponseEntity<List<TransactionResponse>> getAllByCourseId(
             @PathVariable(value = "courseId") long courseId) {
         return new ResponseEntity<>(transactionService.getAllByCourseId(courseId), HttpStatus.OK);
+    }
+
+    @GetMapping("/transactions")
+    public ResponseEntity<TransactionResponse> getByAccountId(
+            @RequestParam(name = "accountId") long accountId,
+            @RequestParam(name = "courseId") long courseId) {
+        return new ResponseEntity<>(transactionService.getByAccountIdAndCourseId(accountId, courseId), HttpStatus.OK);
     }
 
     @PostMapping("/transactions")

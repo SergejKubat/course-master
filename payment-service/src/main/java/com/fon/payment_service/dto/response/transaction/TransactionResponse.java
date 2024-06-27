@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class TransactionResponse {
     private String id;
 
-    private long studentId;
+    private long accountId;
 
     private long courseId;
 
