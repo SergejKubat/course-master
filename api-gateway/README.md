@@ -1,6 +1,8 @@
-# Payment Service
+# API Gateway
 
-Spring Boot service designed to manage payments.
+This project serves as an API Gateway for managing three distinct services: Auth, Course, and Payment. 
+Each service is designed to handle specific functionalities, and the API Gateway aggregates their endpoints under a 
+unified entry point.
 
 ## Table of Contents
 
@@ -16,7 +18,6 @@ Ensure you have the following installed on your machine:
 - Java 22
 - Maven
 - IDE (e.g., IntelliJ, Eclipse)
-- MongoDB
 
 ## Getting Started
 
@@ -29,7 +30,7 @@ git clone https://github.com/SergejKubat/course-master
 Change into the project directory:
 
 ```bash
-cd course-master/payment-service
+cd course-master/api-gateway
 ```
 
 ## Build and Run
@@ -48,10 +49,6 @@ mvn spring-boot:run
 
 ## Endpoints
 
-The application will start on: http://localhost:8083.
+The application will start on: http://localhost:8080.
 
-## Documentation
-
-OpenAPI UI: http://localhost:8083/swagger-ui/index.html
-
-OpenAPI API: http://localhost:8083/v3/api-docs
+OpenAPI documentation: http://localhost:8080/swagger-ui/index.html
