@@ -4,8 +4,8 @@ import com.fon.auth_service.dto.request.LoginRequest;
 import com.fon.auth_service.dto.request.RegisterRequest;
 import com.fon.auth_service.dto.response.AccountResponse;
 import com.fon.auth_service.dto.response.LoginResponse;
-import com.fon.auth_service.security.JwtTokenProvider;
 import com.fon.auth_service.service.AccountService;
+import com.fon.auth_service.service.impl.JwtService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final AccountService accountService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtService jwtService;
 
     public AuthController(AuthenticationManager authenticationManager,
                           AccountService accountService,
-                          JwtTokenProvider jwtTokenProvider) {
+                          JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.accountService = accountService;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -45,8 +45,8 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtTokenProvider.generateToken(authentication);
+        String token = jwtService.generateToken(authentication);
 
-        return new ResponseEntity<>(new LoginResponse(token, jwtTokenProvider.getExpirationTime()), HttpStatus.OK);
+        return new ResponseEntity<>(new LoginResponse(token, jwtService.getExpirationTime()), HttpStatus.OK);
     }
 }

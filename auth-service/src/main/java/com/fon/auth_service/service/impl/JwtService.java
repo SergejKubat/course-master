@@ -1,4 +1,4 @@
-package com.fon.auth_service.security;
+package com.fon.auth_service.service.impl;
 
 import com.fon.auth_service.exception.AuthServiceException;
 import io.jsonwebtoken.*;
@@ -8,23 +8,20 @@ import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
-@Component
-public class JwtTokenProvider {
+@Service
+public class JwtService {
     @Value("${app.jwt-secret}")
     private String jwtSecret;
     @Value("${app.jwt-expiration-milliseconds}")
     private long jwtExpirationInMilliseconds;
 
     public String generateToken(Authentication authentication) {
-        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-
         return Jwts
                 .builder()
                 .subject(authentication.getName())
@@ -49,7 +46,8 @@ public class JwtTokenProvider {
                     .parser()
                     .setSigningKey(getSignInKey())
                     .build()
-                    .parseClaimsJws(token);
+                    .parse(token);
+
             return true;
         } catch (SignatureException ex) {
             throw new AuthServiceException(HttpStatus.BAD_REQUEST, "Invalid JWT signature.");

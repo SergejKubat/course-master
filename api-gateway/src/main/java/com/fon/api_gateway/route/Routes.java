@@ -1,4 +1,4 @@
-package com.fon.api_gateway.routes;
+package com.fon.api_gateway.route;
 
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;

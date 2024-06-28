@@ -1,5 +1,6 @@
 package com.fon.auth_service.security;
 
+import com.fon.auth_service.service.impl.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtService jwtService;
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -32,8 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String token = getJWTFromRequest(request);
 
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-            String username = jwtTokenProvider.extractUsername(token);
+        if (StringUtils.hasText(token) && jwtService.validateToken(token)) {
+            String username = jwtService.extractUsername(token);
 
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
