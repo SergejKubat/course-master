@@ -105,6 +105,29 @@ public class Routes {
     }
 
     @Bean
+    public RouterFunction<ServerResponse> fileStorageRoute() {
+        return route("file_storage")
+                .route(
+                        RequestPredicates.path("/api/files/**"),
+                        HandlerFunctions.http("http://localhost:8084/api")
+                )
+                .filter(circuitBreaker("fileStorageCircuitBreaker", URI.create("forward:/fallbackRoute")))
+                .build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> fileStorageRouteSwagger() {
+        return route("file_storage_swagger")
+                .route(
+                        RequestPredicates.path("/aggregate/file-storage/v3/api-docs"),
+                        HandlerFunctions.http("http://localhost:8084")
+                )
+                .filter(circuitBreaker("fileStorageSwaggerCircuitBreaker", URI.create("forward:/fallbackRoute")))
+                .filter(setPath("/v3/api-docs"))
+                .build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> fallbackRoute() {
         return route("fallbackRoute")
                 .GET("/fallbackRoute", request -> ServerResponse
