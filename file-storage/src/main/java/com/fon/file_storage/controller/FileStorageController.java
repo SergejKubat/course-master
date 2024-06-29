@@ -41,7 +41,7 @@ public class FileStorageController {
 
         String contentType = file.getContentType();
 
-        return new ResponseEntity<>(new FileUploadResponse(fileName, contentType, url), HttpStatus.CREATED);
+        return new ResponseEntity<>(new FileUploadResponse(url), HttpStatus.CREATED);
     }
 
     @GetMapping("/download/{fileName}")
