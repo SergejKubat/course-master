@@ -70,7 +70,7 @@ const Input = (props: InputProps) => {
                 max={props.max}
                 step={props.step}
                 readOnly={props.readOnly}
-                className={`p-3 text-[14px] text-white bg-gray-800 border border-gray-600 outline-none rounded-lg focus:ring-blue-500 focus:border-blue-500 ${props.className}`}
+                className={`p-3 text-[14px] text-white bg-gray-800 border border-gray-600 outline-none rounded-lg ${props.className}`}
                 style={{ border: error ? "1px solid #d93a3a" : "none" }}
                 onBlur={() => setTouched(true)}
                 onChange={onChange}

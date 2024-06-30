@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.tsx";
 import SignInPage from "./pages/SignIn.tsx";
 import SignUpPage from "./pages/SignUp.tsx";
-import ProfilePage from "./pages/Profile.tsx";
+import MyAccountPage from "./pages/MyAccount.tsx";
+import AccountPage from "./pages/Account.tsx";
 import CategoryPage from "./pages/Category.tsx";
 import CoursePage from "./pages/Course.tsx";
 import PurchasePage from "./pages/Purchase.tsx";
@@ -20,7 +21,8 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/sign-in" element={<SignInPage />} />
                 <Route path="/sign-up" element={<SignUpPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/account" element={<MyAccountPage />} />
+                <Route path="/account/:accountId" element={<AccountPage />} />
                 <Route path="/categories/:categoryId" element={<CategoryPage />} />
                 <Route path="/courses/:courseId" element={<CoursePage />} />
                 <Route path="/purchase/:courseId" element={<PurchasePage />} />
