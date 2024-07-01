@@ -60,12 +60,12 @@ const Textarea = (props: TextareaProps) => {
                 placeholder={props.placeholder}
                 disabled={props.disabled}
                 rows={props.rows}
-                className={`text-[14px] bg-[#F7F7F7] border-0 rounded-2xl outline-0 resize-none ${props.className}`}
+                className={`p-3 text-[14px] text-white bg-gray-800 border border-gray-600 outline-none rounded-lg resize-none ${props.className}`}
                 style={{ border: error ? "1px solid #d93a3a" : "none" }}
                 onBlur={() => setTouched(true)}
                 onChange={onChange}
             />
-            <p className={`mt-1 text-xs text-red-500${error ? "" : " invisible"}`}>
+            <p className={`mt-1 text-xs text-red-500${error ? "" : " hidden"}`}>
                 {props.required && !value ? "Field must not be empty." : props.errorMessage}
             </p>
         </>

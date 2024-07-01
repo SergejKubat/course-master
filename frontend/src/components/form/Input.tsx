@@ -75,7 +75,7 @@ const Input = (props: InputProps) => {
                 onBlur={() => setTouched(true)}
                 onChange={onChange}
             />
-            <p className={`mt-1 text-xs text-red-500${error ? "" : " invisible"}`}>
+            <p className={`mt-1 text-xs text-red-500${error ? "" : " hidden"}`}>
                 {props.required && !value ? "Field must not be empty." : props.errorMessage}
             </p>
         </>

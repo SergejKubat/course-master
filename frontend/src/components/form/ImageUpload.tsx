@@ -7,11 +7,11 @@ import { validateFile } from "../../utils/validation";
 import { MAX_FILE_SIZE, IMAGE_SUPPORTED_MIME_TYPES, IMAGE_SUPPORTED_EXTENSIONS } from "../../constants";
 
 interface ImageUploadProps {
-    image: string | File;
-    setImage: Dispatch<SetStateAction<string | File>>;
     title: string;
     width: number;
     height: number;
+    image: string | File;
+    setImage: Dispatch<SetStateAction<string | File>>;
     className?: string;
 }
 
@@ -65,7 +65,7 @@ const ImageUpload = (props: ImageUploadProps) => {
 
     return (
         <div className={props.className}>
-            <label className="block mt-5 mb-2 font-bold text-sm text-gray-700">{props.title}</label>
+            <label className="block mb-2 font-medium text-sm">{props.title}</label>
             <input type="file" accept={IMAGE_SUPPORTED_EXTENSIONS.join(", ")} ref={filePicker} className="hidden" onChange={onFileChange} />
             {imagePreview ? (
                 <div className="flex flex-col items-center">
@@ -81,7 +81,7 @@ const ImageUpload = (props: ImageUploadProps) => {
                 >
                     <BsImageFill className="w-10 h-10" />
                     <p className="mt-3">
-                        Maximum size is {MAX_FILE_SIZE / 1024 / 1024} MB ({IMAGE_SUPPORTED_MIME_TYPES.join(", ")})
+                        Maximum size is {MAX_FILE_SIZE / 1024 / 1024} MB ({IMAGE_SUPPORTED_EXTENSIONS.join(", ")})
                     </p>
                 </div>
             )}

@@ -13,6 +13,8 @@ import NotFoundPage from "./pages/NotFound.tsx";
 import Navbar from "./layouts/Navbar.tsx";
 import Footer from "./layouts/Footer.tsx";
 
+import ScrollToTop from "./components/ScrollToTop.tsx";
+
 const App = () => {
     return (
         <Router>
@@ -22,13 +24,14 @@ const App = () => {
                 <Route path="/sign-in" element={<SignInPage />} />
                 <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/account" element={<MyAccountPage />} />
-                <Route path="/account/:accountId" element={<AccountPage />} />
+                <Route path="/accounts/:accountId" element={<AccountPage />} />
                 <Route path="/categories/:categoryId" element={<CategoryPage />} />
                 <Route path="/courses/:courseId" element={<CoursePage />} />
                 <Route path="/purchase/:courseId" element={<PurchasePage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
             <Footer />
+            <ScrollToTop />
         </Router>
     );
 };

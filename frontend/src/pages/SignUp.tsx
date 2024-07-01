@@ -106,7 +106,7 @@ const SignUpPage = () => {
                         </div>
                     </div>
 
-                    <label htmlFor="usernameInput" className="block mb-2 font-medium text-sm">
+                    <label htmlFor="usernameInput" className="block my-2 font-medium text-sm">
                         Username
                     </label>
                     <Input
@@ -120,7 +120,7 @@ const SignUpPage = () => {
                         onChange={setUsername}
                     />
 
-                    <label htmlFor="emailInput" className="block mb-2 font-medium text-sm">
+                    <label htmlFor="emailInput" className="block my-2 font-medium text-sm">
                         Email
                     </label>
                     <Input
@@ -135,7 +135,7 @@ const SignUpPage = () => {
                         onChange={setEmail}
                     />
 
-                    <label htmlFor="passwordInput" className="block mb-2 font-medium text-sm">
+                    <label htmlFor="passwordInput" className="block my-2 font-medium text-sm">
                         Password
                     </label>
                     <Input
@@ -153,7 +153,7 @@ const SignUpPage = () => {
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full mt-4 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:bg-blue-500"
+                        className="w-full mt-6 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:bg-blue-500"
                     >
                         {loading ? "Signing up..." : "Sign Up"}
                     </Button>

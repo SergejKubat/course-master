@@ -73,7 +73,7 @@ const SignInPage = () => {
                         onChange={setEmail}
                     />
 
-                    <label htmlFor="passwordInput" className="block mb-2 font-medium text-sm">
+                    <label htmlFor="passwordInput" className="block my-2 font-medium text-sm">
                         Password
                     </label>
                     <Input
@@ -92,7 +92,7 @@ const SignInPage = () => {
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full mt-4 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:bg-blue-500"
+                        className="w-full mt-6 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:bg-blue-500"
                     >
                         {loading ? "Signing in..." : "Sign In"}
                     </Button>
