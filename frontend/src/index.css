@@ -21,3 +21,59 @@ body {
     margin: 0;
     min-width: 320px;
 }
+
+.Collapsible {
+    font-size: 16px;
+}
+
+.Collapsible__contentInner {
+    padding: 10px;
+    border: 1px solid #9ca3af;
+    border-top: 0;
+}
+
+.Collapsible__trigger {
+    display: block;
+    font-weight: 400;
+    text-decoration: none;
+    position: relative;
+    border: 1px solid #9ca3af;
+    padding: 10px;
+    background-color: #171941;
+    color: #fff;
+}
+
+.Collapsible__trigger:after {
+    content: "\003E";
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    display: block;
+    transform: rotateZ(90deg);
+    transition: transform 300ms;
+}
+
+.Collapsible__trigger.is-open:after {
+    transform: rotateZ(-90deg);
+}
+
+.Collapsible__trigger.is-disabled {
+    opacity: 0.5;
+    background-color: grey;
+}
+
+.CustomTriggerCSS {
+    background-color: lightcoral;
+    transition: background-color 200ms ease;
+}
+
+.CustomTriggerCSS--open {
+    background-color: darkslateblue;
+}
+
+.Collapsible__custom-sibling {
+    padding: 5px;
+    font-size: 12px;
+    background-color: #cbb700;
+    color: black;
+}

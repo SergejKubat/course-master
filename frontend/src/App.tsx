@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
 
 import Home from "./pages/Home.tsx";
 import SignInPage from "./pages/SignIn.tsx";
@@ -18,6 +19,7 @@ import ScrollToTop from "./components/ScrollToTop.tsx";
 const App = () => {
     return (
         <Router>
+            <SnackbarProvider autoHideDuration={3000} />
             <Navbar />
             <Routes>
                 <Route path="/" element={<Home />} />

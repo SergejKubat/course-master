@@ -1,11 +1,38 @@
 import { useParams, Link } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
-import { MdUpdate } from "react-icons/md";
-import { IoIosPricetags } from "react-icons/io";
-import { PiStudentFill } from "react-icons/pi";
 import { FaShoppingCart } from "react-icons/fa";
+import { IoIosPricetags } from "react-icons/io";
+import { MdUpdate } from "react-icons/md";
+import { PiStudentFill } from "react-icons/pi";
 
+import ModuleContainer from "../components/container/ModuleContainer";
+import ReviewContainer from "../components/container/ReviewContainer";
 import Button from "../components/form/Button";
+
+import IModuleResponse from "../models/responses/IModuleResponse";
+import IReviewResponse from "../models/responses/IReviewResponse";
+
+const module: IModuleResponse = {
+    id: 1,
+    title: "Intro",
+    description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, maiores. Dolorem fuga quaeodio aut excepturi ratione qui veniam illum.",
+    createdAt: "",
+    updatedAt: ""
+};
+
+const review: IReviewResponse = {
+    id: 1,
+    studentId: 1,
+    courseId: 1,
+    rating: 5,
+    comment: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    createdAt: "25/11/2023"
+};
+
+const modules = [module, module, module, module, module];
+
+const reviews = [review, review, review, review, review];
 
 const CoursePage = () => {
     const { courseId } = useParams();
@@ -49,12 +76,12 @@ const CoursePage = () => {
                     <Link to={`/purchase/${1}`}>
                         <Button className="flex items-center gap-x-2 px-6 text-[16px] text-white bg-green-600 enabled:hover:bg-green-700">
                             <FaShoppingCart className="text-[20px]" />
-                            <span>Buy Course</span>
+                            <span>Purchase Course</span>
                         </Button>
                     </Link>
                 </div>
                 <div>
-                    <img src="https://picsum.photos/320/240" alt="Python For Begginers" />
+                    <img src="https://picsum.photos/320/240" alt="Python For Begginers" className="rounded-2xl" />
                 </div>
             </div>
 
@@ -67,6 +94,10 @@ const CoursePage = () => {
                 placeat doloremque dolor vel dolores, eveniet, eligendi quam est sapiente aperiam ipsa rerum, omnis tenetur animi! Repellat,
                 nam fugit neque unde libero laudantium soluta a qui quidem repellendus nobis quisquam laboriosam obcaecati ea!
             </p>
+            <h2 className="mt-10 mb-5 font-semibold text-[20px]">Course Content</h2>
+            <ModuleContainer modules={modules} />
+            <h2 className="mt-10 mb-5 font-semibold text-[20px]">Reviews ({reviews.length})</h2>
+            <ReviewContainer reviews={reviews} />
         </section>
     );
 };
