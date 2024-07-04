@@ -7,7 +7,9 @@ import SignUpPage from "./pages/SignUp.tsx";
 import MyAccountPage from "./pages/MyAccount.tsx";
 import AccountPage from "./pages/Account.tsx";
 import CategoryPage from "./pages/Category.tsx";
-import CoursePage from "./pages/Course.tsx";
+import CreateCoursePage from "./pages/course/CreateCourse.tsx";
+import UpdateCoursePage from "./pages/course/UpdateCourse.tsx";
+import CoursePage from "./pages/course/Course.tsx";
 import PurchasePage from "./pages/Purchase.tsx";
 import NotFoundPage from "./pages/NotFound.tsx";
 
@@ -29,6 +31,8 @@ const App = () => {
                 <Route path="/accounts/:accountId" element={<AccountPage />} />
                 <Route path="/categories/:categoryId" element={<CategoryPage />} />
                 <Route path="/courses/:courseId" element={<CoursePage />} />
+                <Route path="/account/courses/create" element={<CreateCoursePage />} />
+                <Route path="/account/courses/:courseId" element={<UpdateCoursePage />} />
                 <Route path="/purchase/:courseId" element={<PurchasePage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>

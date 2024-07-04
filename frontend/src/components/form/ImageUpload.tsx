@@ -76,7 +76,7 @@ const ImageUpload = (props: ImageUploadProps) => {
                 </div>
             ) : (
                 <div
-                    className="flex flex-col justify-center items-center w-full h-full p-10 border border-dashed border-black cursor-pointer"
+                    className="flex flex-col justify-center items-center w-full h-full p-10 border border-dashed border-gray-500 cursor-pointer"
                     onClick={onFileInputClick}
                 >
                     <BsImageFill className="w-10 h-10" />

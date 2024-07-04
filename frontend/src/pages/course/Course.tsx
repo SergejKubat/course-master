@@ -5,12 +5,12 @@ import { IoIosPricetags } from "react-icons/io";
 import { MdUpdate } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
 
-import ModuleContainer from "../components/container/ModuleContainer";
-import ReviewContainer from "../components/container/ReviewContainer";
-import Button from "../components/form/Button";
+import ModuleContainer from "../../components/container/ModuleContainer";
+import ReviewContainer from "../../components/container/ReviewContainer";
+import Button from "../../components/form/Button";
 
-import IModuleResponse from "../models/responses/IModuleResponse";
-import IReviewResponse from "../models/responses/IReviewResponse";
+import IModuleResponse from "../../models/responses/IModuleResponse";
+import IReviewResponse from "../../models/responses/IReviewResponse";
 
 const module: IModuleResponse = {
     id: 1,
