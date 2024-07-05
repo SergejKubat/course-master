@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Authentication")
 @RestController
-@CrossOrigin
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
@@ -40,7 +39,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmail(), loginRequest.getPassword()
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()
                 ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

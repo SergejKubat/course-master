@@ -21,7 +21,7 @@ const CourseCard = (props: ICourseCardProps) => {
             </div>
             <div className="py-3 px-4 rounded-2xl">
                 <p className="text-[14px] text-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, minus!</p>
-                <div className="flex my-1">
+                <div className="flex items-center gap-x-2 my-1">
                     <Rating
                         iconsCount={5}
                         initialValue={props.course.averageRating}
@@ -30,6 +30,7 @@ const CourseCard = (props: ICourseCardProps) => {
                         size={24}
                         SVGclassName="inline-block"
                     />
+                    <p className="font-semibold text-[20px]">{props.course.averageRating}</p>
                 </div>
 
                 <div className="flex justify-between items-center mt-3">

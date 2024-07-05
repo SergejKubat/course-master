@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Accounts")
 @RestController
-@CrossOrigin
 @RequestMapping("/api/accounts")
 public class AccountController {
     private final AccountService accountService;
@@ -22,6 +21,7 @@ public class AccountController {
 
     @GetMapping("/me")
     public ResponseEntity<AccountResponse> getCurrentAccount() {
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaAAAA");
         return new ResponseEntity<>(accountService.getCurrent(), HttpStatus.OK);
     }
 

@@ -12,7 +12,6 @@ import java.util.List;
 
 @Tag(name = "Transactions")
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
 public class TransactionController {
     private final TransactionService transactionService;

@@ -12,7 +12,6 @@ import java.util.List;
 
 @Tag(name = "Reviews")
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
 public class ReviewController {
     private final ReviewService reviewService;

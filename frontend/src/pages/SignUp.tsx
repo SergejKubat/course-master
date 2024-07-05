@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import validator from "validator";
+import { enqueueSnackbar } from "notistack";
 
 import Input from "../components/form/Input";
 import Button from "../components/form/Button";
@@ -55,7 +56,7 @@ const SignUpPage = () => {
 
         setLoading(true);
 
-        const data: IRegisterRequest = {
+        const registerRequest: IRegisterRequest = {
             username: username,
             email: email,
             firstName: firstName,
@@ -63,9 +64,22 @@ const SignUpPage = () => {
             password: password
         };
 
-        console.log("data: ", data);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(registerRequest)
+        });
 
-        navigate("/sign-in");
+        const data = await response.json();
+
+        if (response.ok) {
+            navigate("/login");
+        } else {
+            enqueueSnackbar(data.message, { variant: "error" });
+            setLoading(false);
+        }
     };
 
     return (
@@ -160,7 +174,7 @@ const SignUpPage = () => {
 
                     <p className="mt-6 text-[16px] text-center">
                         Already have an account?{" "}
-                        <Link to="/sign-in" className="text-blue-500 hover:text-blue-600">
+                        <Link to="/login" className="text-blue-500 hover:text-blue-600">
                             Sign In
                         </Link>
                     </p>

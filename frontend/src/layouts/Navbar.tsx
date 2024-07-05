@@ -16,12 +16,12 @@ const Navbar = () => {
                     <div>
                         <ul className="flex gap-5">
                             <li>
-                                <Link to="/sign-in" className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400">
+                                <Link to="/login" className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400">
                                     Sign In
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/sign-up" className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400">
+                                <Link to="/register" className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400">
                                     Sign Up
                                 </Link>
                             </li>

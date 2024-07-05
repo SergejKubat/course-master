@@ -12,7 +12,6 @@ import java.util.List;
 
 @Tag(name = "Modules")
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
 public class ModuleController {
     private final ModuleService moduleService;

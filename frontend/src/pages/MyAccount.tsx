@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useAuth } from "../contexts/AuthContext";
 
 import AccountDetails from "../layouts/account/AccountDetails";
 import AccountSecurity from "../layouts/account/AccountSecurity";
@@ -13,6 +15,8 @@ const MyAccountPage = () => {
     const [avatar, setAvatar] = useState<string | File>("");
     const [touched, setTouched] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const { account } = useAuth();
 
     const validateForm = (): boolean => {
         if (firstName.length < 3) {
@@ -66,6 +70,16 @@ const MyAccountPage = () => {
 
         console.log(data);
     };
+
+    useEffect(() => {
+        if (account) {
+            setFirstName(account.firstName);
+            setLastName(account.lastName);
+            setOccupation(account.occupation);
+            setDescription(account.description);
+            setAvatar(account.avatar);
+        }
+    }, [account]);
 
     return (
         <section className="flex flex-col gap-y-10 p-5">

@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 
+import { AuthProvider } from "./contexts/AuthContext.tsx";
+
 import Home from "./pages/Home.tsx";
 import SignInPage from "./pages/SignIn.tsx";
 import SignUpPage from "./pages/SignUp.tsx";
@@ -21,23 +23,25 @@ import ScrollToTop from "./components/ScrollToTop.tsx";
 const App = () => {
     return (
         <Router>
-            <SnackbarProvider autoHideDuration={3000} />
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/sign-in" element={<SignInPage />} />
-                <Route path="/sign-up" element={<SignUpPage />} />
-                <Route path="/account" element={<MyAccountPage />} />
-                <Route path="/accounts/:accountId" element={<AccountPage />} />
-                <Route path="/categories/:categoryId" element={<CategoryPage />} />
-                <Route path="/courses/:courseId" element={<CoursePage />} />
-                <Route path="/account/courses/create" element={<CreateCoursePage />} />
-                <Route path="/account/courses/:courseId" element={<UpdateCoursePage />} />
-                <Route path="/purchase/:courseId" element={<PurchasePage />} />
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-            <Footer />
-            <ScrollToTop />
+            <AuthProvider>
+                <SnackbarProvider autoHideDuration={3000} />
+                <Navbar />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<SignInPage />} />
+                    <Route path="/register" element={<SignUpPage />} />
+                    <Route path="/account" element={<MyAccountPage />} />
+                    <Route path="/accounts/:accountId" element={<AccountPage />} />
+                    <Route path="/categories/:categoryId" element={<CategoryPage />} />
+                    <Route path="/courses/:courseId" element={<CoursePage />} />
+                    <Route path="/account/courses/create" element={<CreateCoursePage />} />
+                    <Route path="/account/courses/:courseId" element={<UpdateCoursePage />} />
+                    <Route path="/purchase/:courseId" element={<PurchasePage />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+                <Footer />
+                <ScrollToTop />
+            </AuthProvider>
         </Router>
     );
 };

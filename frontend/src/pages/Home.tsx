@@ -1,16 +1,28 @@
+import { useState, useEffect } from "react";
+
 import CategoryCard from "../components/card/CategoryCard";
 
 import ICategoriesResponse from "../models/responses/ICategoriesResponse";
 
 import Logo from "../assets/logo.png";
 
-const category: ICategoriesResponse = {
-    id: 1,
-    name: "Web Development",
-    thumbnailUrl: "https://picsum.photos/320/240"
-};
-
 const HomePage = () => {
+    const [categories, setCategories] = useState<ICategoriesResponse[]>([]);
+
+    const getCategories = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/`, { method: "GET" });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setCategories(data);
+        }
+    };
+
+    useEffect(() => {
+        getCategories().then();
+    }, []);
+
     return (
         <section className="flex flex-col items-center gap-y-10 p-5">
             <div className="flex flex-col items-center gap-y-5 w-[640px]">
@@ -31,11 +43,9 @@ const HomePage = () => {
             <div>
                 <h2 className="mb-5 text-[28px] text-center">Categories</h2>
                 <div className="flex flex-wrap justify-center gap-5">
-                    <CategoryCard category={category} />
-                    <CategoryCard category={category} />
-                    <CategoryCard category={category} />
-                    <CategoryCard category={category} />
-                    <CategoryCard category={category} />
+                    {categories.map((category) => (
+                        <CategoryCard key={category.id} category={category} />
+                    ))}
                 </div>
             </div>
         </section>

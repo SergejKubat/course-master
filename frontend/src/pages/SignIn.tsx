@@ -1,7 +1,10 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
+
+import { useAuth } from "../contexts/AuthContext";
 
 import { Link, useNavigate } from "react-router-dom";
 import validator from "validator";
+import { enqueueSnackbar } from "notistack";
 
 import Input from "../components/form/Input";
 import Button from "../components/form/Button";
@@ -12,11 +15,12 @@ import ILoginRequest from "../models/requests/ILoginRequest";
 const SignInPage = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [error, setError] = useState<string>("");
     const [touched, setTouched] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();
+
+    const { login, authenticated } = useAuth();
 
     const validateForm = (): boolean => {
         if (!validator.isEmail(email)) {
@@ -40,17 +44,25 @@ const SignInPage = () => {
         }
 
         setLoading(true);
-        setError("");
 
-        const data: ILoginRequest = {
+        const loginRequest: ILoginRequest = {
             email: email,
             password: password
         };
 
-        console.log("data: ", data);
-
-        navigate("/profile");
+        try {
+            login(loginRequest);
+        } catch (error: any) {
+            enqueueSnackbar(error.message, { variant: "error" });
+            setLoading(false);
+        }
     };
+
+    useEffect(() => {
+        if (authenticated) {
+            navigate("/account");
+        }
+    }, [authenticated]);
 
     return (
         <section className="flex justify-center items-center">
@@ -97,11 +109,9 @@ const SignInPage = () => {
                         {loading ? "Signing in..." : "Sign In"}
                     </Button>
 
-                    {error ? <p className="mt-2 text-center text-red-500">{error}</p> : null}
-
                     <p className="mt-6 text-[16px] text-center">
                         Don't have an account?{" "}
-                        <Link to="/sign-up" className="text-blue-500 hover:text-blue-600">
+                        <Link to="/register" className="text-blue-500 hover:text-blue-600">
                             Sign up
                         </Link>
                     </p>

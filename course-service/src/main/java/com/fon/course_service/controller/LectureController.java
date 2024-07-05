@@ -12,7 +12,6 @@ import java.util.List;
 
 @Tag(name = "Lectures")
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
 public class LectureController {
     private final LectureService lectureService;

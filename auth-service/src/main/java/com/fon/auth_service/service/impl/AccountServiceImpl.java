@@ -126,10 +126,10 @@ public class AccountServiceImpl implements AccountService {
     private Account getCurrentAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String currentUsername = authentication.getName();
+        String currentEmail = authentication.getName();
 
-        return accountRepository.findByUsernameOrEmail(currentUsername, currentUsername).orElseThrow(
-                () -> new ResourceNotFoundException("Account", "username", currentUsername)
+        return accountRepository.findByEmail(currentEmail).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "email", currentEmail)
         );
     }
 }

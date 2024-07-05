@@ -16,9 +16,15 @@ import java.util.List;
 @Component
 public class AuthenticationFilter implements Filter, Ordered {
     public static final List<String> publicApiEndpoints = List.of(
-            "/api/auth/login1",
+            "/api/auth/login",
             "/api/auth/register"
     );
+
+    public static final List<String> publicMethods = List.of(
+            "GET",
+            "OPTIONS"
+    );
+
     @Autowired
     public JwtUtil jwtUtil;
 
@@ -29,7 +35,7 @@ public class AuthenticationFilter implements Filter, Ordered {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         // check if request method is GET or URI is in public endpoints
-        if (request.getMethod().equals("GET") || publicApiEndpoints.contains(request.getRequestURI())) {
+        if (publicMethods.contains(request.getMethod()) || publicApiEndpoints.contains(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }

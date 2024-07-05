@@ -13,7 +13,6 @@ import java.util.List;
 
 @Tag(name = "Courses")
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
 public class CourseController {
     private final CourseService courseService;

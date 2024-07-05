@@ -12,7 +12,6 @@ import java.util.List;
 
 @Tag(name = "Categories")
 @RestController
-@CrossOrigin
 @RequestMapping("/api/categories")
 public class CategoryController {
     private final CategoryService categoryService;

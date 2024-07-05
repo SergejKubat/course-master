@@ -8,44 +8,52 @@ import useDebounce from "../hooks/useDebounce";
 import Input from "../components/form/Input";
 import CourseCard from "../components/card/CourseCard";
 
+import ICategoryResponse from "../models/responses/ICategoryResponse";
 import ICoursesResponse from "../models/responses/ICoursesResponse";
 
-const course: ICoursesResponse = {
-    id: 1,
-    mentorId: 1,
-    title: "Python For Beginners",
-    thumbnailUrl: "https://picsum.photos/320/240",
-    price: 19.99,
-    averageRating: 4.5
-};
-
 const CategoryPage = () => {
+    const [category, setCategory] = useState<ICategoryResponse | null>(null);
+    const [courses, setCourses] = useState<ICoursesResponse[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     const { categoryId } = useParams();
 
     const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
+    const getCategory = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/${categoryId}`, { method: "GET" });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setCategory(data);
+
+            getCourses();
+        }
+    };
+
+    const getCourses = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/${categoryId}/courses`, { method: "GET" });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setCourses(data);
+        }
+    };
+
     useEffect(() => {
-        console.log("query: ", debouncedSearchQuery);
+        getCategory().then();
     }, [debouncedSearchQuery]);
 
-    console.log(categoryId);
+    if (!category) return;
 
     return (
         <section className="flex justify-center">
             <div className="max-w-[1200px]">
                 <p className="text-sm">Category</p>
-                <h1 className="font-bold text-[36px]">Web Development</h1>
-                <p className="my-5">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Et repellat quo id at molestiae cupiditate ipsam dolor adipisci
-                    itaque provident saepe assumenda facere, neque ipsa inventore consequatur quae sit sunt nisi eos, vero voluptatibus
-                    debitis sequi optio. Cumque, debitis tempore. Asperiores id deleniti temporibus deserunt labore ipsa, eius possimus
-                    ipsum voluptatum quos aut necessitatibus ex perferendis! Laborum totam tempora iure nisi quaerat eligendi qui amet quis
-                    veritatis, tempore sit similique, voluptatum perferendis nesciunt quam tenetur repellat esse, quasi consequatur cum
-                    animi aspernatur minus incidunt. Pariatur ducimus incidunt hic dolorem numquam animi! Asperiores velit veritatis, culpa
-                    doloremque placeat dolore molestias autem.
-                </p>
+                <h1 className="font-bold text-[36px]">{category.name}</h1>
+                <p className="my-5">{category.description}</p>
 
                 <div className="flex justify-center mt-10">
                     <label className="relative">
@@ -60,13 +68,11 @@ const CategoryPage = () => {
                 </div>
 
                 <div className="mt-5">
-                    <h2 className="mb-5 text-[28px] text-center">Courses (5)</h2>
+                    <h2 className="mb-5 text-[28px] text-center">Courses ({courses.length})</h2>
                     <div className="flex flex-wrap justify-center gap-5">
-                        <CourseCard course={course} />
-                        <CourseCard course={course} />
-                        <CourseCard course={course} />
-                        <CourseCard course={course} />
-                        <CourseCard course={course} />
+                        {courses.map((course) => (
+                            <CourseCard key={course.id} course={course} />
+                        ))}
                     </div>
                 </div>
             </div>

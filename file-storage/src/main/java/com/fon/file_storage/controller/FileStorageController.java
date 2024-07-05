@@ -17,7 +17,6 @@ import java.io.IOException;
 
 @Tag(name = "Files")
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
 public class FileStorageController {
     private final FileStorageService fileStorageService;
