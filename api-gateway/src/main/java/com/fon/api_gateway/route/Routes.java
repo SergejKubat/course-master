@@ -109,7 +109,7 @@ public class Routes {
         return route("file_storage")
                 .route(
                         RequestPredicates.path("/api/files/**"),
-                        HandlerFunctions.http("http://localhost:8084/api")
+                        HandlerFunctions.http("http://localhost:8084/api/files")
                 )
                 .filter(circuitBreaker("fileStorageCircuitBreaker", URI.create("forward:/fallbackRoute")))
                 .build();

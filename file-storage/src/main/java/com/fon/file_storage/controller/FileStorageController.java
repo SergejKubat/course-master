@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Tag(name = "Files")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/files")
 public class FileStorageController {
     private final FileStorageService fileStorageService;
 
@@ -34,7 +34,7 @@ public class FileStorageController {
         String fileName = fileStorageService.upload(file);
 
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/download/")
+                .path("/api/files/download/")
                 .path(fileName)
                 .toUriString();
 

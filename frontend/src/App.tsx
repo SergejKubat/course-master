@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 
-import { AuthProvider } from "./contexts/AuthContext.tsx";
+import { AuthProvider, ProtectedRoute } from "./contexts/AuthContext.tsx";
 
 import Home from "./pages/Home.tsx";
 import SignInPage from "./pages/SignIn.tsx";
@@ -30,13 +30,41 @@ const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<SignInPage />} />
                     <Route path="/register" element={<SignUpPage />} />
-                    <Route path="/account" element={<MyAccountPage />} />
                     <Route path="/accounts/:accountId" element={<AccountPage />} />
                     <Route path="/categories/:categoryId" element={<CategoryPage />} />
                     <Route path="/courses/:courseId" element={<CoursePage />} />
-                    <Route path="/account/courses/create" element={<CreateCoursePage />} />
-                    <Route path="/account/courses/:courseId" element={<UpdateCoursePage />} />
-                    <Route path="/purchase/:courseId" element={<PurchasePage />} />
+                    <Route
+                        path="/account"
+                        element={
+                            <ProtectedRoute>
+                                <MyAccountPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/account/courses/create"
+                        element={
+                            <ProtectedRoute>
+                                <CreateCoursePage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/account/courses/:courseId"
+                        element={
+                            <ProtectedRoute>
+                                <UpdateCoursePage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/purchase/:courseId"
+                        element={
+                            <ProtectedRoute>
+                                <PurchasePage />
+                            </ProtectedRoute>
+                        }
+                    />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
                 <Footer />

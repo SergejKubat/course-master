@@ -1,8 +1,10 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import validator from "validator";
 import { enqueueSnackbar } from "notistack";
+
+import { useAuth } from "../contexts/AuthContext";
 
 import Input from "../components/form/Input";
 import Button from "../components/form/Button";
@@ -20,6 +22,8 @@ const SignUpPage = () => {
     const [touched, setTouched] = useState<boolean>(false);
 
     const navigate = useNavigate();
+
+    const { authenticated } = useAuth();
 
     const validateForm = (): boolean => {
         if (firstName.length < 3) {
@@ -81,6 +85,12 @@ const SignUpPage = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (authenticated) {
+            navigate("/account");
+        }
+    }, [authenticated]);
 
     return (
         <section className="flex justify-center items-center">
@@ -167,7 +177,7 @@ const SignUpPage = () => {
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full mt-6 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:bg-blue-500"
+                        className="w-full mt-6 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:opacity-50"
                     >
                         {loading ? "Signing up..." : "Sign Up"}
                     </Button>

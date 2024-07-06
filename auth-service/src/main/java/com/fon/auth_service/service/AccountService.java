@@ -12,7 +12,7 @@ public interface AccountService {
 
     AccountResponse create(RegisterRequest registerRequest);
 
-    AccountResponse update(long id, UpdateAccountRequest updateUserRequest);
+    AccountResponse updateCurrent(UpdateAccountRequest updateUserRequest);
 
     void changePassword(ChangePasswordRequest changePasswordRequest);
 }

@@ -34,8 +34,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CoursesResponse> getAllByCategoryId(long categoryId) {
-        return courseRepository.findAllByCategoryId(categoryId).stream().map(dtoMapper::mapToCoursesResponse).toList();
+    public List<CoursesResponse> getAllByCategoryId(long categoryId, String query) {
+        //courseRepository.findAll()
+        return courseRepository.findByMentorIdAndTitleContainsIgnoreCase(categoryId, query)
+                .stream().map(dtoMapper::mapToCoursesResponse).toList();
     }
 
     @Override

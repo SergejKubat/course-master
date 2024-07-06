@@ -5,8 +5,9 @@ import { FaSearch } from "react-icons/fa";
 
 import useDebounce from "../hooks/useDebounce";
 
-import Input from "../components/form/Input";
 import CourseCard from "../components/card/CourseCard";
+import Input from "../components/form/Input";
+import Spinner from "../components/Spinner";
 
 import ICategoryResponse from "../models/responses/ICategoryResponse";
 import ICoursesResponse from "../models/responses/ICoursesResponse";
@@ -33,7 +34,10 @@ const CategoryPage = () => {
     };
 
     const getCourses = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/${categoryId}/courses`, { method: "GET" });
+        const response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/categories/${categoryId}/courses?query=${debouncedSearchQuery}`,
+            { method: "GET" }
+        );
 
         const data = await response.json();
 
@@ -44,9 +48,13 @@ const CategoryPage = () => {
 
     useEffect(() => {
         getCategory().then();
+    }, []);
+
+    useEffect(() => {
+        getCourses().then();
     }, [debouncedSearchQuery]);
 
-    if (!category) return;
+    if (!category) return <Spinner />;
 
     return (
         <section className="flex justify-center">
@@ -68,7 +76,7 @@ const CategoryPage = () => {
                 </div>
 
                 <div className="mt-5">
-                    <h2 className="mb-5 text-[28px] text-center">Courses ({courses.length})</h2>
+                    <h2 className="mb-5 text-[28px] text-center">Courses {courses.length > 0 ? `(${courses.length})` : null}</h2>
                     <div className="flex flex-wrap justify-center gap-5">
                         {courses.map((course) => (
                             <CourseCard key={course.id} course={course} />

@@ -78,7 +78,7 @@ const CreateReviewModal = (props: ICreateReviewModalProps) => {
                 />
                 <Button
                     disabled={loading}
-                    className="w-full mt-4 text-[16px] text-white bg-blue-500 enabled:hover:bg-blue-600 disabled:opacity-75"
+                    className="w-full mt-4 text-[16px] text-white bg-blue-500 enabled:hover:bg-blue-600 disabled:opacity-50"
                     onClick={addReview}
                 >
                     {loading ? "Sending..." : "Send"}

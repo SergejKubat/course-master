@@ -1,5 +1,9 @@
 import { useState, FormEvent } from "react";
 
+import { enqueueSnackbar } from "notistack";
+
+import { useAuth } from "../../contexts/AuthContext";
+
 import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
 
@@ -10,9 +14,10 @@ import IChangePasswordRequest from "../../models/requests/IChangePasswordRequest
 const AccountSecurity = () => {
     const [oldPassword, setOldPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
-    //const [error, setError] = useState<string>("");
     const [touched, setTouched] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const { authFetch, logout } = useAuth();
 
     const validateForm = () => {
         if (!validatePassword(oldPassword)) {
@@ -37,12 +42,24 @@ const AccountSecurity = () => {
 
         setLoading(true);
 
-        const data: IChangePasswordRequest = {
+        const changePasswordRequest: IChangePasswordRequest = {
             oldPassword: oldPassword,
             newPassword: newPassword
         };
 
-        console.log(data);
+        const response = await authFetch(`${import.meta.env.VITE_API_BASE_URL}/accounts/change-password`, {
+            method: "PUT",
+            body: JSON.stringify(changePasswordRequest)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            logout();
+        } else {
+            enqueueSnackbar(data.message, { variant: "error" });
+            setLoading(false);
+        }
     };
 
     return (
@@ -82,12 +99,10 @@ const AccountSecurity = () => {
                 <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full mt-5 mb-3 px-4 text-[16px] text-white bg-blue-500 enabled:hover:bg-blue-600 disabled:bg-blue-600"
+                    className="w-full mt-5 mb-3 px-4 text-[16px] text-white bg-blue-500 enabled:hover:bg-blue-600 disabled:opacity-50"
                 >
                     {loading ? "Changing Password..." : "Change Password"}
                 </Button>
-
-                {/* {error ? <p className="mt-5 text-sm text-center text-red-700">{error}</p> : null} */}
             </form>
         </div>
     );

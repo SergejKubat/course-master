@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 
+import { enqueueSnackbar } from "notistack";
+
 import { useAuth } from "../contexts/AuthContext";
 
 import AccountDetails from "../layouts/account/AccountDetails";
 import AccountSecurity from "../layouts/account/AccountSecurity";
+
+import Spinner from "../components/Spinner";
+
+import { uploadFile } from "../utils/file";
 
 import IUpdateAccountRequest from "../models/requests/IUpdateAccountRequest";
 
@@ -14,9 +20,10 @@ const MyAccountPage = () => {
     const [description, setDescription] = useState<string>("");
     const [avatar, setAvatar] = useState<string | File>("");
     const [touched, setTouched] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [updating, setUpdating] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const { account } = useAuth();
+    const { account, token, refreshAccount, authFetch } = useAuth();
 
     const validateForm = (): boolean => {
         if (firstName.length < 3) {
@@ -27,48 +34,49 @@ const MyAccountPage = () => {
             return false;
         }
 
-        if (occupation.length < 3) {
-            return false;
-        }
-
-        if (description.length < 3) {
-            return false;
-        }
-
         return true;
     };
 
-    const saveChanges = () => {
+    const saveChanges = async () => {
         setTouched(true);
 
         if (!validateForm()) {
             return;
         }
 
+        setUpdating(true);
+
+        let avatarUrl: string;
+
         // check if avatar has been changed
         if (avatar instanceof File) {
-            updateAvatar(avatar);
+            avatarUrl = await uploadFile(avatar, token!);
+        } else {
+            avatarUrl = avatar;
         }
 
-        setLoading(true);
-
-        const data: IUpdateAccountRequest = {
+        const updateAccountRequest: IUpdateAccountRequest = {
             firstName: firstName,
             lastName: lastName,
             occupation: occupation,
             description: description,
-            avatar: "avatar"
+            avatar: avatarUrl
         };
 
-        console.log(data);
-    };
+        try {
+            await authFetch(`${import.meta.env.VITE_API_BASE_URL}/accounts/me`, {
+                method: "PUT",
+                body: JSON.stringify(updateAccountRequest)
+            });
 
-    const updateAvatar = async (avatar: File) => {
-        const data = new FormData();
+            await refreshAccount();
 
-        data.append("file", avatar);
+            enqueueSnackbar("Account details are successfully updated.", { variant: "success" });
+        } catch (error: any) {
+            enqueueSnackbar(error.message, { variant: "error" });
+        }
 
-        console.log(data);
+        setUpdating(false);
     };
 
     useEffect(() => {
@@ -78,26 +86,33 @@ const MyAccountPage = () => {
             setOccupation(account.occupation);
             setDescription(account.description);
             setAvatar(account.avatar);
+
+            // ensure state update
+            setTimeout(() => {
+                setLoading(false);
+            }, 100);
         }
     }, [account]);
+
+    if (loading) return <Spinner />;
 
     return (
         <section className="flex flex-col gap-y-10 p-5">
             <AccountDetails
-                username="username"
+                username={account!.username}
                 avatar={avatar}
                 setAvatar={setAvatar}
                 firstName={firstName}
                 setFirstName={setFirstName}
                 lastName={lastName}
                 setLastName={setLastName}
-                email="test@test.com"
+                email={account!.email}
                 occupation={occupation}
                 setOccupation={setOccupation}
                 description={description}
                 setDescription={setDescription}
                 touched={touched}
-                loading={loading}
+                updating={updating}
                 saveChanges={saveChanges}
             />
             <AccountSecurity />

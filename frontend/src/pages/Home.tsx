@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import CategoryCard from "../components/card/CategoryCard";
+import Spinner from "../components/Spinner";
 
 import ICategoriesResponse from "../models/responses/ICategoriesResponse";
 
@@ -8,6 +9,7 @@ import Logo from "../assets/logo.png";
 
 const HomePage = () => {
     const [categories, setCategories] = useState<ICategoriesResponse[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const getCategories = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/`, { method: "GET" });
@@ -16,12 +18,15 @@ const HomePage = () => {
 
         if (response.ok) {
             setCategories(data);
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         getCategories().then();
     }, []);
+
+    if (loading) return <Spinner />;
 
     return (
         <section className="flex flex-col items-center gap-y-10 p-5">

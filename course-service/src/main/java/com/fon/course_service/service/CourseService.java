@@ -7,7 +7,7 @@ import com.fon.course_service.dto.response.course.CoursesResponse;
 import java.util.List;
 
 public interface CourseService {
-    List<CoursesResponse> getAllByCategoryId(long categoryId);
+    List<CoursesResponse> getAllByCategoryId(long categoryId, String query);
 
     CourseResponse getById(long id);
 

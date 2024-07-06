@@ -1,5 +1,7 @@
 import { useState, useRef, ChangeEvent, Dispatch, SetStateAction } from "react";
 
+import { enqueueSnackbar } from "notistack";
+
 import { BsImageFill } from "react-icons/bs";
 
 import { validateFile } from "../../utils/validation";
@@ -17,13 +19,10 @@ interface ImageUploadProps {
 
 const ImageUpload = (props: ImageUploadProps) => {
     const [imagePreview, setImagePreviuew] = useState<string>(typeof props.image === "string" ? props.image : "");
-    const [error, setError] = useState<string>("");
 
     const filePicker = useRef<HTMLInputElement>(null);
 
     const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setError("");
-
         if (!e.target.files) return;
 
         const file = e.target.files[0];
@@ -35,7 +34,7 @@ const ImageUpload = (props: ImageUploadProps) => {
         });
 
         if (!validationOutput.success) {
-            setError(validationOutput.message);
+            enqueueSnackbar(validationOutput.message, { variant: "error" });
             return;
         }
 
@@ -76,7 +75,7 @@ const ImageUpload = (props: ImageUploadProps) => {
                 </div>
             ) : (
                 <div
-                    className="flex flex-col justify-center items-center w-full h-full p-10 border border-dashed border-gray-500 cursor-pointer"
+                    className="flex flex-col justify-center items-center w-full h-full p-5 border border-dashed border-gray-500 cursor-pointer"
                     onClick={onFileInputClick}
                 >
                     <BsImageFill className="w-10 h-10" />
@@ -85,7 +84,6 @@ const ImageUpload = (props: ImageUploadProps) => {
                     </p>
                 </div>
             )}
-            {error ? <p className="mt-1 text-sm text-[#b91c1c]">{error}</p> : null}
         </div>
     );
 };

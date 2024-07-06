@@ -23,8 +23,9 @@ public class CourseController {
 
     @GetMapping("/categories/{categoryId}/courses")
     public ResponseEntity<List<CoursesResponse>> getAllByCategoryId(
-            @PathVariable(value = "categoryId") long categoryId) {
-        return new ResponseEntity<>(courseService.getAllByCategoryId(categoryId), HttpStatus.OK);
+            @PathVariable(value = "categoryId") long categoryId,
+            @RequestParam(name = "query", required = false, defaultValue = "") String query) {
+        return new ResponseEntity<>(courseService.getAllByCategoryId(categoryId, query), HttpStatus.OK);
     }
 
     @GetMapping("/courses/{id}")

@@ -19,7 +19,7 @@ interface IAccountDetailsProps {
     description: string;
     setDescription: Dispatch<SetStateAction<string>>;
     touched: boolean;
-    loading: boolean;
+    updating: boolean;
     saveChanges: () => void;
 }
 
@@ -29,7 +29,14 @@ const AccountDetails = (props: IAccountDetailsProps) => {
             <h2 className="mb-8 font-semibold text-[24px] text-center">Account Details</h2>
             <div className="flex flex-col gap-5 lg:flex-row lg:justify-center lg:gap-10">
                 <div>
-                    <ImageUpload title="Avatar" width={300} height={300} image={props.avatar} setImage={props.setAvatar} className="mb-5" />
+                    <ImageUpload
+                        title="Avatar"
+                        width={300}
+                        height={300}
+                        image={props.avatar}
+                        setImage={props.setAvatar}
+                        className="w-[300px] h-[300px] mb-10"
+                    />
                     <p className="font-semibold text-center text-[18px]">@{props.username}</p>
                 </div>
 
@@ -102,11 +109,11 @@ const AccountDetails = (props: IAccountDetailsProps) => {
                     />
 
                     <Button
-                        disabled={props.loading}
-                        className="w-full mt-4 mb-3 px-4 text-[16px] text-white bg-green-500 enabled:hover:bg-green-600 disabled:bg-green-600"
+                        disabled={props.updating}
+                        className="w-full mt-4 mb-3 px-4 text-[16px] text-white bg-green-500 enabled:hover:bg-green-600 disabled:opacity-50"
                         onClick={props.saveChanges}
                     >
-                        {props.loading ? "Saving Changes..." : "Save Changes"}
+                        {props.updating ? "Saving Changes..." : "Save Changes"}
                     </Button>
                 </div>
             </div>

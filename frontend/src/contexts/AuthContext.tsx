@@ -163,7 +163,7 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
         }
     }, [loading, authenticated]);
 
-    if (loading || !authenticated) return <p>Loading...</p>;
+    if (loading || !authenticated) return <p className="text-[24px] text-white">Loading...</p>;
 
     return children;
 };

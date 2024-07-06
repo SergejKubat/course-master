@@ -6,14 +6,14 @@ interface ISpinnerProps {
 
 const Spinner = (props: ISpinnerProps) => {
     return (
-        <div className="flex justify-center items-center w-full h-full">
+        <div className="flex justify-center items-center w-full h-[60vh]">
             <div
                 className="loader"
                 style={{
-                    width: props.size ? `${props.size}rem` : "4rem",
-                    height: props.size ? `${props.size}rem` : "4rem",
-                    borderWidth: props.width ? `${props.width}rem` : "0.5rem",
-                    borderColor: props.color ? `${props.color}` : "#001e53",
+                    width: `${props.size ? props.size : "4"}rem`,
+                    height: `${props.size ? props.size : "4"}rem`,
+                    borderWidth: `${props.width ? props.width : "0.5"}rem`,
+                    borderColor: props.color ? `${props.color}` : "#93c5fd",
                     borderBottomColor: "transparent"
                 }}
             />

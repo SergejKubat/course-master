@@ -92,20 +92,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponse update(long id, UpdateAccountRequest updateUserRequest) {
-        // check if account exists
-        Account account = accountRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Account", "id", String.valueOf(id))
-        );
+    public AccountResponse updateCurrent(UpdateAccountRequest updateUserRequest) {
+        Account currentAccount = getCurrentAccount();
 
         // update data
-        account.setFirstName(updateUserRequest.getFirstName());
-        account.setLastName(updateUserRequest.getLastName());
-        account.setOccupation(updateUserRequest.getOccupation());
-        account.setDescription(updateUserRequest.getDescription());
-        account.setAvatar(updateUserRequest.getAvatar());
+        currentAccount.setFirstName(updateUserRequest.getFirstName());
+        currentAccount.setLastName(updateUserRequest.getLastName());
+        currentAccount.setOccupation(updateUserRequest.getOccupation());
+        currentAccount.setDescription(updateUserRequest.getDescription());
+        currentAccount.setAvatar(updateUserRequest.getAvatar());
 
-        return dtoMapper.mapToAccountResponse(accountRepository.save(account));
+        return dtoMapper.mapToAccountResponse(accountRepository.save(currentAccount));
     }
 
     @Override

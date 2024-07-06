@@ -21,7 +21,6 @@ public class AccountController {
 
     @GetMapping("/me")
     public ResponseEntity<AccountResponse> getCurrentAccount() {
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaAAAA");
         return new ResponseEntity<>(accountService.getCurrent(), HttpStatus.OK);
     }
 
@@ -30,11 +29,10 @@ public class AccountController {
         return new ResponseEntity<>(accountService.getById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AccountResponse> update(
-            @PathVariable(value = "id") long id,
+    @PutMapping("/me")
+    public ResponseEntity<AccountResponse> updateCurrentAccount(
             @RequestBody UpdateAccountRequest updateAccountRequest) {
-        return new ResponseEntity<>(accountService.update(id, updateAccountRequest), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.updateCurrent(updateAccountRequest), HttpStatus.OK);
     }
 
     @PutMapping("/change-password")

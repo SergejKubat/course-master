@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../contexts/AuthContext";
+
+import AccountDropdown from "../components/AccountDropdown";
+
 import Logo from "../assets/logo.png";
 
 const Navbar = () => {
+    const { account } = useAuth();
+
     return (
         <header className="mb-10">
             <nav className="bg-gray-950">
@@ -14,18 +20,25 @@ const Navbar = () => {
                         </h1>
                     </Link>
                     <div>
-                        <ul className="flex gap-5">
-                            <li>
-                                <Link to="/login" className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400">
-                                    Sign In
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/register" className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400">
-                                    Sign Up
-                                </Link>
-                            </li>
-                        </ul>
+                        {account ? (
+                            <AccountDropdown />
+                        ) : (
+                            <ul className="flex gap-5">
+                                <li>
+                                    <Link to="/login" className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400">
+                                        Sign In
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/register"
+                                        className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-400"
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </li>
+                            </ul>
+                        )}
                     </div>
                 </div>
             </nav>

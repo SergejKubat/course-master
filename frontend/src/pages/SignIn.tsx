@@ -104,7 +104,7 @@ const SignInPage = () => {
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full mt-6 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:bg-blue-500"
+                        className="w-full mt-6 px-8 py-3 text-[16px] text-white bg-blue-500 rounded-2xl hover:bg-blue-600 disabled:opacity-50"
                     >
                         {loading ? "Signing in..." : "Sign In"}
                     </Button>
