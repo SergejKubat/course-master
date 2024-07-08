@@ -34,10 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         });
 
         if (response.ok) {
-            // @TODO: check this
             const account = await response.json();
-
-            account.token = token;
 
             return account;
         }

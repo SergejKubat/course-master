@@ -6,10 +6,12 @@ import com.fon.course_service.dto.request.module.ModuleRequest;
 import com.fon.course_service.dto.response.module.ModuleResponse;
 import com.fon.course_service.exception.ResourceNotFoundException;
 import com.fon.course_service.repository.CourseRepository;
+import com.fon.course_service.repository.LectureRepository;
 import com.fon.course_service.repository.ModuleRepository;
 import com.fon.course_service.service.ModuleService;
 import com.fon.course_service.service.mapper.DtoMapper;
 import com.fon.course_service.service.mapper.EntityMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +19,19 @@ import java.util.List;
 @Service
 public class ModuleServiceImpl implements ModuleService {
     private final ModuleRepository moduleRepository;
+    private final LectureRepository lectureRepository;
     private final CourseRepository courseRepository;
 
     private final DtoMapper dtoMapper;
     private final EntityMapper entityMapper;
 
     public ModuleServiceImpl(ModuleRepository moduleRepository,
+                             LectureRepository lectureRepository,
                              CourseRepository courseRepository,
                              DtoMapper dtoMapper,
                              EntityMapper entityMapper) {
         this.moduleRepository = moduleRepository;
+        this.lectureRepository = lectureRepository;
         this.courseRepository = courseRepository;
         this.dtoMapper = dtoMapper;
         this.entityMapper = entityMapper;
@@ -34,7 +39,15 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public List<ModuleResponse> getAllByCourseId(long courseId) {
-        return moduleRepository.findAllByCourseId(courseId).stream().map(dtoMapper::mapToModuleResponse).toList();
+        List<ModuleResponse> moduleResponses = moduleRepository.findAllByCourseId(courseId).stream()
+                .map(dtoMapper::mapToModuleResponse).toList();
+
+        for (ModuleResponse moduleResponse : moduleResponses) {
+            moduleResponse.setLectures(lectureRepository.findAllByModuleId(moduleResponse.getId())
+                    .stream().map(dtoMapper::mapToLectureResponse).toList());
+        }
+
+        return moduleResponses;
     }
 
     @Override

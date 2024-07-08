@@ -1,10 +1,17 @@
 package com.fon.course_service.service.impl;
 
+import com.fon.course_service.client.AuthClient;
+import com.fon.course_service.client.PaymentClient;
 import com.fon.course_service.domain.Category;
 import com.fon.course_service.domain.Course;
 import com.fon.course_service.dto.request.course.CourseRequest;
+import com.fon.course_service.dto.response.account.AccountResponse;
+import com.fon.course_service.dto.response.course.CourseCategoryResponse;
+import com.fon.course_service.dto.response.course.CourseMentorResponse;
 import com.fon.course_service.dto.response.course.CourseResponse;
 import com.fon.course_service.dto.response.course.CoursesResponse;
+import com.fon.course_service.dto.response.transaction.TransactionResponse;
+import com.fon.course_service.exception.BadRequestException;
 import com.fon.course_service.exception.ResourceNotFoundException;
 import com.fon.course_service.repository.CategoryRepository;
 import com.fon.course_service.repository.CourseRepository;
@@ -20,22 +27,28 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final CategoryRepository categoryRepository;
 
+    private final AuthClient authClient;
+    private final PaymentClient paymentClient;
+
     private final DtoMapper dtoMapper;
     private final EntityMapper entityMapper;
 
     public CourseServiceImpl(CourseRepository courseRepository,
                              CategoryRepository categoryRepository,
+                             AuthClient authClient,
+                             PaymentClient paymentClient,
                              DtoMapper dtoMapper,
                              EntityMapper entityMapper) {
         this.courseRepository = courseRepository;
         this.categoryRepository = categoryRepository;
+        this.authClient = authClient;
+        this.paymentClient = paymentClient;
         this.dtoMapper = dtoMapper;
         this.entityMapper = entityMapper;
     }
 
     @Override
     public List<CoursesResponse> getAllByCategoryId(long categoryId, String query) {
-        //courseRepository.findAll()
         return courseRepository.findByMentorIdAndTitleContainsIgnoreCase(categoryId, query)
                 .stream().map(dtoMapper::mapToCoursesResponse).toList();
     }
@@ -47,7 +60,29 @@ public class CourseServiceImpl implements CourseService {
                 () -> new ResourceNotFoundException("Course", "id", String.valueOf(id))
         );
 
-        return dtoMapper.mapToCourseResponse(course);
+        CourseResponse courseResponse = dtoMapper.mapToCourseResponse(course);
+
+        // get mentor's account from auth service
+        AccountResponse accountResponse = authClient.getAccount(course.getMentorId());
+
+        // check if mentor's account exists
+        if (accountResponse == null) {
+            throw new BadRequestException("Mentor's account doesn't exist.");
+        }
+
+        CourseMentorResponse courseMentorResponse = new CourseMentorResponse(accountResponse.getId(),
+                accountResponse.getFirstName(),
+                accountResponse.getLastName(),
+                accountResponse.getAvatar());
+
+        courseResponse.setMentor(courseMentorResponse);
+
+        // get students (transactions) count
+        List<TransactionResponse> transactions = paymentClient.getCourseTransactions(course.getId());
+
+        courseResponse.setStudentsCount(transactions.size());
+
+        return courseResponse;
     }
 
     @Override

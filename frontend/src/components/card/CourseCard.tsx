@@ -30,7 +30,7 @@ const CourseCard = (props: ICourseCardProps) => {
                         size={24}
                         SVGclassName="inline-block"
                     />
-                    <p className="font-semibold text-[20px]">{props.course.averageRating}</p>
+                    <p className="font-semibold text-[20px]">{props.course.averageRating.toFixed(2)}</p>
                 </div>
 
                 <div className="flex justify-between items-center mt-3">

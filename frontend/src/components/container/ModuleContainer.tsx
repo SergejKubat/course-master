@@ -21,11 +21,11 @@ const ModuleContainer = (props: IModuleContainerProps) => {
             <div className="flex justify-between mb-5">
                 <div className="flex items-center gap-x-2">
                     <BsFillCollectionFill />
-                    <p>5 Modules</p>
+                    <p>{props.modules.length} Modules</p>
                 </div>
                 <div className="flex items-center gap-x-2">
                     <FaCirclePlay />
-                    <p>22 Lectures</p>
+                    <p>{props.modules.reduce((acc, module) => acc + module.lectures.length, 0)} Lectures</p>
                 </div>
             </div>
             {props.modules.map((module, index) => (

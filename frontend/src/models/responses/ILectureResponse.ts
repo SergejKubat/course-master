@@ -3,7 +3,7 @@ export default interface ILectureResponse {
     title: string;
     description: string;
     attachmentUrl: string;
-    isPublic: boolean;
+    public: boolean;
     createdAt: string;
     updatedAt: string;
 }

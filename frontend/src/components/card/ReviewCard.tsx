@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
+
+import { formatDate } from "../../utils/date";
 
 import IReviewResponse from "../../models/responses/IReviewResponse";
 
@@ -8,12 +11,22 @@ interface IReviewCardProps {
 
 const ReviewCard = (props: IReviewCardProps) => {
     return (
-        <div className="w-full my-2 p-2 border border-gray-500 rounded-2xl">
+        <div className="w-full my-2 py-2 px-3 border border-gray-500 rounded-2xl">
             <div className="flex items-center gap-3">
-                <img src="https://robohash.org/GIH.png" alt="John Doe" width={40} height={40} className="rounded" />
+                <Link to={`/accounts/${props.review.student.id}`}>
+                    <img
+                        src={props.review.student.avatar}
+                        alt={`${props.review.student.firstName} ${props.review.student.lastName}`}
+                        width={40}
+                        height={40}
+                        className="rounded"
+                    />
+                </Link>
                 <div>
-                    <h3 className="font-semibold">John Doe</h3>
-                    <p className="text-xs text-gray-500">{props.review.createdAt}</p>
+                    <h3 className="font-semibold">
+                        {props.review.student.firstName} {props.review.student.lastName}
+                    </h3>
+                    <p className="text-xs text-gray-500">{formatDate(props.review.createdAt)}</p>
                 </div>
             </div>
             <div className="flex my-2">

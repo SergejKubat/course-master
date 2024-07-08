@@ -4,14 +4,18 @@ import { Rating } from "react-simple-star-rating";
 import { enqueueSnackbar } from "notistack";
 import { FaTimes } from "react-icons/fa";
 
+import { useAuth } from "../../contexts/AuthContext";
+
 import Textarea from "../form/Textarea";
 import Button from "../form/Button";
 
 import IReviewRequest from "../../models/requests/IReviewRequest";
+import IReviewResponse from "../../models/responses/IReviewResponse";
 
 interface ICreateReviewModalProps {
     courseId: number;
     setShowModal: Dispatch<SetStateAction<boolean>>;
+    addReview: (review: IReviewResponse) => void;
 }
 
 const CreateReviewModal = (props: ICreateReviewModalProps) => {
@@ -19,6 +23,8 @@ const CreateReviewModal = (props: ICreateReviewModalProps) => {
     const [comment, setComment] = useState<string>("");
     const [touched, setTouched] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const { account, authFetch } = useAuth();
 
     const validateForm = () => {
         if (!rating) {
@@ -33,23 +39,56 @@ const CreateReviewModal = (props: ICreateReviewModalProps) => {
         return true;
     };
 
-    const addReview = async () => {
+    const createReview = async () => {
         setTouched(true);
 
-        if (!validateForm()) {
+        if (!validateForm() || !account) {
             return;
         }
 
         setLoading(true);
 
-        const data: IReviewRequest = {
-            studentId: 1,
-            courseId: 1,
+        const reviewRequest: IReviewRequest = {
+            studentId: account.id,
+            courseId: props.courseId,
             rating: rating,
             comment: comment
         };
 
-        console.log(data);
+        const response = await authFetch(`${import.meta.env.VITE_API_BASE_URL}/reviews`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(reviewRequest)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            const newReview: IReviewResponse = {
+                id: data.id,
+                student: {
+                    id: account.id,
+                    firstName: account.firstName,
+                    lastName: account.lastName,
+                    avatar: account.avatar
+                },
+                courseId: props.courseId,
+                rating: rating,
+                comment: comment,
+                createdAt: new Date().toDateString()
+            };
+
+            props.addReview(newReview);
+
+            enqueueSnackbar("Reviews is successfully created.", { variant: "success" });
+
+            props.setShowModal(false);
+        } else {
+            enqueueSnackbar(data.message, { variant: "error" });
+            setLoading(false);
+        }
     };
 
     return (
@@ -79,7 +118,7 @@ const CreateReviewModal = (props: ICreateReviewModalProps) => {
                 <Button
                     disabled={loading}
                     className="w-full mt-4 text-[16px] text-white bg-blue-500 enabled:hover:bg-blue-600 disabled:opacity-50"
-                    onClick={addReview}
+                    onClick={createReview}
                 >
                     {loading ? "Sending..." : "Send"}
                 </Button>

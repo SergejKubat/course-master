@@ -1,9 +1,13 @@
 package com.fon.course_service.service.impl;
 
+import com.fon.course_service.client.AuthClient;
 import com.fon.course_service.domain.Course;
 import com.fon.course_service.domain.Review;
 import com.fon.course_service.dto.request.review.ReviewRequest;
+import com.fon.course_service.dto.response.account.AccountResponse;
 import com.fon.course_service.dto.response.review.ReviewResponse;
+import com.fon.course_service.dto.response.review.ReviewStudentResponse;
+import com.fon.course_service.exception.BadRequestException;
 import com.fon.course_service.exception.ResourceNotFoundException;
 import com.fon.course_service.repository.CourseRepository;
 import com.fon.course_service.repository.ReviewRepository;
@@ -12,6 +16,7 @@ import com.fon.course_service.service.mapper.DtoMapper;
 import com.fon.course_service.service.mapper.EntityMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,22 +24,51 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
 
+    private final AuthClient authClient;
+
     private final DtoMapper dtoMapper;
     private final EntityMapper entityMapper;
 
     public ReviewServiceImpl(ReviewRepository reviewRepository,
                              CourseRepository courseRepository,
+                             AuthClient authClient,
                              DtoMapper dtoMapper,
                              EntityMapper entityMapper) {
         this.reviewRepository = reviewRepository;
         this.courseRepository = courseRepository;
+        this.authClient = authClient;
         this.dtoMapper = dtoMapper;
         this.entityMapper = entityMapper;
     }
 
     @Override
     public List<ReviewResponse> getAllByCourseId(long courseId) {
-        return reviewRepository.findByCourseId(courseId).stream().map(dtoMapper::mapToReviewResponse).toList();
+        List<Review> reviews = reviewRepository.findByCourseId(courseId);
+
+        List<ReviewResponse> reviewResponses = new ArrayList<>();
+
+        for (Review review : reviews) {
+            // get student's account from auth service
+            AccountResponse accountResponse = authClient.getAccount(review.getStudentId());
+
+            // check if student's account exists
+            if (accountResponse == null) {
+                throw new BadRequestException("Student's account doesn't exist.");
+            }
+
+            ReviewStudentResponse reviewStudentResponse = new ReviewStudentResponse(accountResponse.getId(),
+                    accountResponse.getFirstName(),
+                    accountResponse.getLastName(),
+                    accountResponse.getAvatar());
+
+            ReviewResponse reviewResponse = dtoMapper.mapToReviewResponse(review);
+
+            reviewResponse.setStudent(reviewStudentResponse);
+
+            reviewResponses.add(reviewResponse);
+        }
+
+        return reviewResponses;
     }
 
     @Override

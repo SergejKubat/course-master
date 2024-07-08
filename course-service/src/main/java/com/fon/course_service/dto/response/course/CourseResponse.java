@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 public class CourseResponse {
     private long id;
 
-    private long mentorId;
+    public CourseCategoryResponse category;
+
+    public CourseMentorResponse mentor;
 
     private String title;
 
@@ -25,6 +27,8 @@ public class CourseResponse {
     private double price;
 
     private double averageRating;
+
+    public int studentsCount;
 
     private LocalDateTime createdAt;
 

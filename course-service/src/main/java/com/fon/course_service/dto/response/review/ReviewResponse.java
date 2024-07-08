@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ReviewResponse {
     private long id;
 
-    private Long studentId;
+    private ReviewStudentResponse student;
 
     private Long courseId;
 
