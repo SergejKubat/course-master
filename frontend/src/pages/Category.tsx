@@ -48,7 +48,7 @@ const CategoryPage = () => {
 
     useEffect(() => {
         getCategory().then();
-    }, []);
+    }, [categoryId]);
 
     useEffect(() => {
         getCourses().then();

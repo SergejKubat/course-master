@@ -47,6 +47,10 @@ public class Routes {
     public RouterFunction<ServerResponse> courseServiceRoute() {
         return route("course_service")
                 .route(
+                        RequestPredicates.path("/api/mentors/**"),
+                        HandlerFunctions.http("http://localhost:8082/api/mentors")
+                )
+                .route(
                         RequestPredicates.path("/api/categories/**"),
                         HandlerFunctions.http("http://localhost:8082/api/categories")
                 )

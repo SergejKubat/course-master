@@ -28,6 +28,13 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getAllByCategoryId(categoryId, query), HttpStatus.OK);
     }
 
+    @GetMapping("/mentors/{mentorId}/courses")
+    public ResponseEntity<List<CoursesResponse>> getAllByMentorId(
+            @PathVariable(value = "mentorId") long mentorId,
+            @RequestParam(name = "query", required = false, defaultValue = "") String query) {
+        return new ResponseEntity<>(courseService.getAllByMentorId(mentorId, query), HttpStatus.OK);
+    }
+
     @GetMapping("/courses/{id}")
     public ResponseEntity<CourseResponse> getById(@PathVariable(value = "id") long id) {
         return new ResponseEntity<>(courseService.getById(id), HttpStatus.OK);

@@ -1,67 +1,102 @@
+import { useState, useEffect } from "react";
+
 import { useParams } from "react-router-dom";
-import { AiFillStar, AiFillPlayCircle } from "react-icons/ai";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { MdReviews } from "react-icons/md";
+import { FaSearch } from "react-icons/fa";
+
+import useDebounce from "../hooks/useDebounce";
 
 import CourseCard from "../components/card/CourseCard";
+import Input from "../components/form/Input";
+import Spinner from "../components/Spinner";
 
+import IAccountResponse from "../models/responses/IAccountResponse";
 import ICoursesResponse from "../models/responses/ICoursesResponse";
 
-const course: ICoursesResponse = {
-    id: 1,
-    mentorId: 1,
-    title: "Python For Beginners",
-    thumbnailUrl: "https://picsum.photos/320/240",
-    price: 19.99,
-    averageRating: 4.5
-};
-
 const AccountPage = () => {
+    const [account, setAccount] = useState<IAccountResponse | null>(null);
+    const [courses, setCourses] = useState<ICoursesResponse[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
     const { accountId } = useParams();
 
-    console.log(accountId);
+    const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
+    const getAccount = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/accounts/${accountId}`, { method: "GET" });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setAccount(data);
+
+            getCourses();
+        }
+    };
+
+    const getCourses = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/mentors/${accountId}/courses?query=${debouncedSearchQuery}`, {
+            method: "GET"
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setCourses(data);
+        }
+    };
+
+    useEffect(() => {
+        getAccount().then();
+    }, [accountId]);
+
+    useEffect(() => {
+        getCourses().then();
+    }, [debouncedSearchQuery]);
+
+    if (!account) return <Spinner />;
 
     return (
-        <section className="flex flex-col items-center max-w-[1200px] mx-auto">
-            <div className="flex justify-between gap-x-10 w-full">
-                <div>
-                    <h1 className="mt-3 font-bold text-[30px]">John Doe</h1>
-                    <p className="text-[14px]">Software Engineer</p>
-
-                    <div className="my-5">
-                        <div className="flex items-center gap-x-3">
-                            <AiFillStar className="text-[24px]" />
-                            <p>4.5 Rating</p>
-                        </div>
-                        <div className="flex items-center gap-x-3 mt-2">
-                            <MdReviews className="text-[24px]" />
-                            <p>10 Reviews</p>
-                        </div>
-                        <div className="flex items-center gap-x-3 mt-2">
-                            <BsFillPeopleFill className="text-[24px]" />
-                            <p>20 Students</p>
-                        </div>
-                        <div className="flex items-center gap-x-3 mt-2">
-                            <AiFillPlayCircle className="text-[24px]" />
-                            <p>2 Courses</p>
-                        </div>
+        <section className="flex justify-center">
+            <div className="max-w-[1200px]">
+                <div className="flex flex-col items-center">
+                    <img
+                        src={account.avatar}
+                        alt={`${account.firstName} ${account.lastName}`}
+                        width={200}
+                        height={200}
+                        className="rounded-full"
+                    />
+                    <div>
+                        <h1 className="mt-3 font-bold text-[30px]">
+                            {account.firstName} {account.lastName}
+                        </h1>
+                        <p className="text-[14px]">{account.occupation}</p>
                     </div>
                 </div>
-                <div>
-                    <img src="https://robohash.org/GIH.png" alt="John Doe" width={200} height={200} className="rounded-full" />
-                </div>
-            </div>
 
-            <h2 className="mt-10 mb-5 font-semibold text-[20px]">About Me</h2>
-            <p>
-                Consectetur adipisicing elit. Quam est deserunt, voluptatibus incidunt fugiat fuga quae dicta eaque! Aperiam, quaerat sunt?
-                Vero molestiae inventore, facere reiciendis quis voluptatibus! Magni, corporis dolor error dolores aperiam non illum iusto
-                deserunt? Perspiciatis, voluptate nostrum alias quos eaque ratione labore quae quas. Distinctio, incidunt?
-            </p>
-            <h2 className="mt-10 mb-5 font-semibold text-[20px]">Courses (5)</h2>
-            <div className="flex flex-wrap justify-center gap-5">
-                <CourseCard course={course} />
-                <CourseCard course={course} />
+                <div className="flex justify-center mt-10">
+                    <label className="relative">
+                        <FaSearch className="w-[18px] h-[18px] absolute top-1/2 left-3 transform -translate-y-1/2" />
+                        <Input
+                            placeholder="Search..."
+                            value={searchQuery}
+                            className="w-[300px] pl-10 text-[18px] rounded-lg xs:w-[350px] xl:w-[376px]"
+                            onChange={setSearchQuery}
+                        />
+                    </label>
+                </div>
+
+                <h2 className="mt-10 mb-5 font-semibold text-[20px]">About Me</h2>
+                <p>{account.description}</p>
+
+                <div className="mt-5">
+                    <h2 className="mb-5 text-[28px] text-center">Courses {courses.length > 0 ? `(${courses.length})` : null}</h2>
+                    <div className="flex flex-wrap justify-center gap-5">
+                        {courses.map((course) => (
+                            <CourseCard key={course.id} course={course} />
+                        ))}
+                    </div>
+                </div>
             </div>
         </section>
     );

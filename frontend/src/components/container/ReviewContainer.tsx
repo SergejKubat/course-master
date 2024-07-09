@@ -54,9 +54,15 @@ const ReviewContainer = (props: IReviewContainerProps) => {
                     Add Review
                 </Button>
             ) : null}
-            {reviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
-            ))}
+            {reviews.length > 0 ? (
+                <>
+                    {reviews.map((review) => (
+                        <ReviewCard key={review.id} review={review} />
+                    ))}
+                </>
+            ) : (
+                <p className="text-center">No reviews.</p>
+            )}
             {modalShown ? <CreateReviewModal courseId={props.courseId} setShowModal={setModalShown} addReview={addReview} /> : null}
         </div>
     );

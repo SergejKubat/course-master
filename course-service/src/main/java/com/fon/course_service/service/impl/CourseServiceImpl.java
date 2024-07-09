@@ -49,7 +49,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CoursesResponse> getAllByCategoryId(long categoryId, String query) {
-        return courseRepository.findByMentorIdAndTitleContainsIgnoreCase(categoryId, query)
+        return courseRepository.findByCategoryIdAndTitleContainsIgnoreCase(categoryId, query)
+                .stream().map(dtoMapper::mapToCoursesResponse).toList();
+    }
+
+    @Override
+    public List<CoursesResponse> getAllByMentorId(long mentorId, String query) {
+        return courseRepository.findByMentorIdAndTitleContainsIgnoreCase(mentorId, query)
                 .stream().map(dtoMapper::mapToCoursesResponse).toList();
     }
 

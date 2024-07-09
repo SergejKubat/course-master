@@ -9,6 +9,8 @@ import java.util.List;
 public interface CourseService {
     List<CoursesResponse> getAllByCategoryId(long categoryId, String query);
 
+    List<CoursesResponse> getAllByMentorId(long mentorId, String query);
+
     CourseResponse getById(long id);
 
     CourseResponse create(CourseRequest courseRequest);
