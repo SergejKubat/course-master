@@ -5,6 +5,7 @@ import com.fon.payment_service.dto.response.transaction.TransactionResponse;
 import com.fon.payment_service.service.TransactionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +33,11 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.getAllByCourseId(courseId), HttpStatus.OK);
     }
 
-    @GetMapping("/transactions")
-    public ResponseEntity<TransactionResponse> getByAccountId(
+    @GetMapping(value = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getByAccountId(
             @RequestParam(name = "accountId") long accountId,
             @RequestParam(name = "courseId") long courseId) {
-        return new ResponseEntity<>(transactionService.getByAccountIdAndCourseId(accountId, courseId), HttpStatus.OK);
+        return new ResponseEntity<>("{ \"isPurchased\": " + transactionService.getByAccountIdAndCourseId(accountId, courseId) + " }", HttpStatus.OK);
     }
 
     @PostMapping("/transactions")

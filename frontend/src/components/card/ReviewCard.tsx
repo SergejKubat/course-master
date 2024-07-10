@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
+import { enqueueSnackbar } from "notistack";
+import { FaTrash } from "react-icons/fa";
+
+import { useAuth } from "../../contexts/AuthContext";
 
 import { formatDate } from "../../utils/date";
 
@@ -7,11 +11,37 @@ import IReviewResponse from "../../models/responses/IReviewResponse";
 
 interface IReviewCardProps {
     review: IReviewResponse;
+    removeReview: (reviewId: number) => void;
 }
 
 const ReviewCard = (props: IReviewCardProps) => {
+    const { account, authFetch } = useAuth();
+
+    const deleteReview = async () => {
+        const response = await authFetch(`${import.meta.env.VITE_API_BASE_URL}/reviews/${props.review.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            props.removeReview(props.review.id);
+
+            enqueueSnackbar("Reviews is successfully deleted.", { variant: "success" });
+        } else {
+            enqueueSnackbar("Error.", { variant: "error" });
+        }
+    };
+
     return (
-        <div className="w-full my-2 py-2 px-3 border border-gray-500 rounded-2xl">
+        <div className="relative w-full my-2 py-2 px-3 border border-gray-500 rounded-2xl">
+            {account?.id === props.review.student.id ? (
+                <FaTrash
+                    className="absolute top-4 right-3 text-[20px] text-red-500 cursor-pointer hover:text-red-600"
+                    onClick={deleteReview}
+                />
+            ) : null}
             <div className="flex items-center gap-3">
                 <Link to={`/accounts/${props.review.student.id}`}>
                     <img

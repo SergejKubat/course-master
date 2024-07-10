@@ -33,6 +33,9 @@ public class Transaction {
     @Field(name = "payment_method")
     private String paymentMethod;
 
+    @Field(name ="card_data")
+    private CardData cardData;
+
     @Field(name = "created_at")
     @CreatedDate
     private LocalDateTime createdAt;

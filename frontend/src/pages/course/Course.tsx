@@ -22,6 +22,7 @@ import IModuleResponse from "../../models/responses/IModuleResponse";
 const CoursePage = () => {
     const [course, setCourse] = useState<ICourseResponse | null>(null);
     const [modules, setModules] = useState<IModuleResponse[]>([]);
+    const [isPurchased, setIsPurchased] = useState<boolean>(false);
 
     const { courseId } = useParams();
 
@@ -49,9 +50,25 @@ const CoursePage = () => {
         }
     };
 
+    const checkIsPurchased = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/transactions?accountId=${account!.id}&courseId=${courseId}`, {
+            method: "GET"
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setIsPurchased(data.isPurchased);
+        }
+    };
+
     useEffect(() => {
         getCourse().then();
-    }, [courseId]);
+
+        if (account) {
+            checkIsPurchased().then();
+        }
+    }, [courseId, account]);
 
     if (!course) return <Spinner />;
 
@@ -105,7 +122,7 @@ const CoursePage = () => {
                         </div>
                     </div>
 
-                    {account ? (
+                    {account && !isPurchased ? (
                         <Link to={`/purchase/${course.id}`}>
                             <Button className="flex items-center gap-x-2 px-6 text-[16px] text-white bg-green-600 enabled:hover:bg-green-700">
                                 <FaShoppingCart className="text-[20px]" />
@@ -124,7 +141,7 @@ const CoursePage = () => {
             <h2 className="mt-10 mb-5 font-semibold text-[20px]">Course Content</h2>
             <ModuleContainer modules={modules} />
             <h2 className="mt-10 mb-5 font-semibold text-[20px]">Reviews</h2>
-            <ReviewContainer courseId={course.id} />
+            <ReviewContainer courseId={course.id} isPurchased={isPurchased} />
         </section>
     );
 };

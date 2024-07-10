@@ -75,9 +75,9 @@ const CreateReviewModal = (props: ICreateReviewModalProps) => {
                     avatar: account.avatar
                 },
                 courseId: props.courseId,
-                rating: rating,
-                comment: comment,
-                createdAt: new Date().toDateString()
+                rating: data.rating,
+                comment: data.comment,
+                createdAt: data.createdAt
             };
 
             props.addReview(newReview);

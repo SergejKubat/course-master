@@ -10,7 +10,7 @@ public interface TransactionService {
 
     List<TransactionResponse> getAllByCourseId(long courseId);
 
-    TransactionResponse getByAccountIdAndCourseId(long accountId, long courseId);
+    boolean getByAccountIdAndCourseId(long accountId, long courseId);
 
     TransactionResponse create(TransactionRequest transactionRequest);
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, FormEvent } from "react";
 
 import { useParams, useNavigate } from "react-router-dom";
 import validator from "validator";
+import { enqueueSnackbar } from "notistack";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdUpdate } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
@@ -30,7 +31,7 @@ const PurchasePage = () => {
 
     const navigate = useNavigate();
 
-    const { account } = useAuth();
+    const { account, authFetch } = useAuth();
 
     const getCourse = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/courses/${courseId}`, { method: "GET" });
@@ -62,7 +63,7 @@ const PurchasePage = () => {
         return true;
     };
 
-    const purchaseCourse = (e: FormEvent) => {
+    const purchaseCourse = async (e: FormEvent) => {
         e.preventDefault();
 
         setTouched(true);
@@ -77,12 +78,31 @@ const PurchasePage = () => {
             accountId: account!.id,
             courseId: parseInt(courseId!),
             currency: "USD",
-            paymentMethod: "credit_card"
+            paymentMethod: "credit_card",
+            card: {
+                number: cardNumber,
+                expiration: expiration,
+                securityCode: securityCode,
+                zip: zip
+            }
         };
 
-        console.log("data: ", transactionRequest);
+        const response = await authFetch(`${import.meta.env.VITE_API_BASE_URL}/transactions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(transactionRequest)
+        });
 
-        navigate(`/courses/${courseId}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            navigate(`/courses/${courseId}`);
+        } else {
+            enqueueSnackbar(data.message, { variant: "error" });
+            setLoading(false);
+        }
     };
 
     useEffect(() => {

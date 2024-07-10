@@ -4,18 +4,16 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class TransactionRequest {
+public class CardDataRequest {
     @NotEmpty
-    private long accountId;
+    private String number;
 
     @NotEmpty
-    private long courseId;
+    private String expiration;
 
     @NotEmpty
-    private String currency;
+    private String securityCode;
 
     @NotEmpty
-    private String paymentMethod;
-
-    private CardDataRequest card;
+    private String zip;
 }

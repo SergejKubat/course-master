@@ -10,6 +10,7 @@ import IReviewResponse from "../../models/responses/IReviewResponse";
 
 interface IReviewContainerProps {
     courseId: number;
+    isPurchased: boolean;
 }
 
 const ReviewContainer = (props: IReviewContainerProps) => {
@@ -32,6 +33,10 @@ const ReviewContainer = (props: IReviewContainerProps) => {
         setReviews([...reviews, review]);
     };
 
+    const removeReview = (reviewId: number) => {
+        setReviews(reviews.filter((review) => review.id !== reviewId));
+    };
+
     const checkAccountReview = (): boolean => {
         for (let i = 0; i < reviews.length; i++) {
             if (account!.id === reviews[i].student.id) return true;
@@ -46,7 +51,7 @@ const ReviewContainer = (props: IReviewContainerProps) => {
 
     return (
         <div className="w-full">
-            {account && !checkAccountReview() ? (
+            {account && props.isPurchased && !checkAccountReview() ? (
                 <Button
                     className="block ml-auto mb-5 px-6 text-[16px] text-white bg-green-600 enabled:hover:bg-green-700"
                     onClick={() => setModalShown(true)}
@@ -57,7 +62,7 @@ const ReviewContainer = (props: IReviewContainerProps) => {
             {reviews.length > 0 ? (
                 <>
                     {reviews.map((review) => (
-                        <ReviewCard key={review.id} review={review} />
+                        <ReviewCard key={review.id} review={review} removeReview={removeReview} />
                     ))}
                 </>
             ) : (

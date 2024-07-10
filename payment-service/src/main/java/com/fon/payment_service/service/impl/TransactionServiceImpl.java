@@ -52,12 +52,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponse getByAccountIdAndCourseId(long accountId, long courseId) {
-        Transaction transaction = transactionRepository.findByAccountIdAndCourseId(accountId, courseId).orElseThrow(
-                () -> new ResourceNotFoundException("Transaction", "accountId, course id", accountId + ", " + courseId)
-        );
+    public boolean getByAccountIdAndCourseId(long accountId, long courseId) {
+        Transaction transaction = transactionRepository.findByAccountIdAndCourseId(accountId, courseId).orElse(null);
 
-        return dtoMapper.mapToTransactionResponse(transaction);
+        return transaction != null;
     }
 
     @Override
