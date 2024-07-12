@@ -35,6 +35,11 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getAllByMentorId(mentorId, query), HttpStatus.OK);
     }
 
+    @GetMapping("/courses/popular")
+    public ResponseEntity<List<CoursesResponse>> getPopular() {
+        return new ResponseEntity<>(courseService.getPopular(), HttpStatus.OK);
+    }
+
     @GetMapping("/courses/{id}")
     public ResponseEntity<CourseResponse> getById(@PathVariable(value = "id") long id) {
         return new ResponseEntity<>(courseService.getById(id), HttpStatus.OK);

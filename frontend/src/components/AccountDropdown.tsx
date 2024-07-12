@@ -44,7 +44,7 @@ const AccountDropdown = () => {
                             className="w-[48px] h-[48px] rounded-full"
                         />
                     ) : (
-                        <FaUser className="w-[48px] h-[48px] text-gray-800" />
+                        <FaUser className="w-[36px] h-[36px] text-gray-300" />
                     )}
                     <div>
                         <div className="hidden sm:block">

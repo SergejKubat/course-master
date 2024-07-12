@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
 
+import { useFlag } from "@unleash/proxy-client-react";
+
 import CategoryCard from "../components/card/CategoryCard";
+import CourseCard from "../components/card/CourseCard";
 import Spinner from "../components/Spinner";
 
 import ICategoriesResponse from "../models/responses/ICategoriesResponse";
+import ICoursesResponse from "../models/responses/ICoursesResponse";
 
 import Logo from "../assets/logo.png";
 
 const HomePage = () => {
     const [categories, setCategories] = useState<ICategoriesResponse[]>([]);
+    const [popularCourses, setPopularCourses] = useState<ICoursesResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+
+    const popularCoursesEnabled = useFlag("popularCourses");
 
     const getCategories = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/`, { method: "GET" });
@@ -18,13 +25,28 @@ const HomePage = () => {
 
         if (response.ok) {
             setCategories(data);
-            setLoading(false);
+        }
+    };
+
+    const getPopularCourses = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/courses/popular`, { method: "GET" });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setPopularCourses(data);
         }
     };
 
     useEffect(() => {
         getCategories().then();
-    }, []);
+
+        if (popularCoursesEnabled) {
+            getPopularCourses().then();
+        }
+
+        setLoading(false);
+    }, [popularCoursesEnabled]);
 
     if (loading) return <Spinner />;
 
@@ -53,6 +75,17 @@ const HomePage = () => {
                     ))}
                 </div>
             </div>
+
+            {popularCoursesEnabled ? (
+                <div>
+                    <h2 className="mb-5 text-[28px] text-center">Popular Courses</h2>
+                    <div className="flex flex-wrap justify-center gap-5">
+                        {popularCourses.map((popularCourse) => (
+                            <CourseCard course={popularCourse} />
+                        ))}
+                    </div>
+                </div>
+            ) : null}
         </section>
     );
 };

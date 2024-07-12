@@ -18,6 +18,9 @@ import com.fon.course_service.repository.CourseRepository;
 import com.fon.course_service.service.CourseService;
 import com.fon.course_service.service.mapper.DtoMapper;
 import com.fon.course_service.service.mapper.EntityMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,6 +60,14 @@ public class CourseServiceImpl implements CourseService {
     public List<CoursesResponse> getAllByMentorId(long mentorId, String query) {
         return courseRepository.findByMentorIdAndTitleContainsIgnoreCase(mentorId, query)
                 .stream().map(dtoMapper::mapToCoursesResponse).toList();
+    }
+
+    @Override
+    public List<CoursesResponse> getPopular() {
+        Pageable pageable = PageRequest.of(0, 5,
+                Sort.by(Sort.Direction.DESC, "averageRating"));
+
+        return courseRepository.findAll(pageable).stream().map(dtoMapper::mapToCoursesResponse).toList();
     }
 
     @Override

@@ -11,6 +11,8 @@ public interface CourseService {
 
     List<CoursesResponse> getAllByMentorId(long mentorId, String query);
 
+    List<CoursesResponse> getPopular();
+
     CourseResponse getById(long id);
 
     CourseResponse create(CourseRequest courseRequest);

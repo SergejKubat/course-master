@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
+import { useFlag } from "@unleash/proxy-client-react";
 import { FaSearch } from "react-icons/fa";
 
 import useDebounce from "../hooks/useDebounce";
@@ -19,6 +20,8 @@ const AccountPage = () => {
 
     const { accountId } = useParams();
 
+    const searchAuthorCoursesEnabled = useFlag("searchAuthorCourses");
+
     const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
     const getAccount = async () => {
@@ -34,9 +37,14 @@ const AccountPage = () => {
     };
 
     const getCourses = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/mentors/${accountId}/courses?query=${debouncedSearchQuery}`, {
-            method: "GET"
-        });
+        const response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/mentors/${accountId}/courses${
+                searchAuthorCoursesEnabled ? `?query=${debouncedSearchQuery}` : ""
+            }`,
+            {
+                method: "GET"
+            }
+        );
 
         const data = await response.json();
 
@@ -74,27 +82,35 @@ const AccountPage = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-center mt-10">
-                    <label className="relative">
-                        <FaSearch className="w-[18px] h-[18px] absolute top-1/2 left-3 transform -translate-y-1/2" />
-                        <Input
-                            placeholder="Search..."
-                            value={searchQuery}
-                            className="w-[300px] pl-10 text-[18px] rounded-lg xs:w-[350px] xl:w-[376px]"
-                            onChange={setSearchQuery}
-                        />
-                    </label>
-                </div>
-
-                <h2 className="mt-10 mb-5 font-semibold text-[20px]">About Me</h2>
+                <h2 className="mt-10 mb-5 text-center font-semibold text-[20px]">About Me</h2>
                 <p>{account.description}</p>
+
+                {searchAuthorCoursesEnabled ? (
+                    <div className="flex justify-center mt-10">
+                        <label className="relative">
+                            <FaSearch className="w-[18px] h-[18px] absolute top-1/2 left-3 transform -translate-y-1/2" />
+                            <Input
+                                placeholder="Search..."
+                                value={searchQuery}
+                                className="w-[300px] pl-10 text-[18px] rounded-lg xs:w-[350px] xl:w-[376px]"
+                                onChange={setSearchQuery}
+                            />
+                        </label>
+                    </div>
+                ) : null}
 
                 <div className="mt-5">
                     <h2 className="mb-5 text-[28px] text-center">Courses {courses.length > 0 ? `(${courses.length})` : null}</h2>
                     <div className="flex flex-wrap justify-center gap-5">
-                        {courses.map((course) => (
-                            <CourseCard key={course.id} course={course} />
-                        ))}
+                        {courses.length > 0 ? (
+                            <>
+                                {courses.map((course) => (
+                                    <CourseCard key={course.id} course={course} />
+                                ))}
+                            </>
+                        ) : (
+                            <p>No courses found.</p>
+                        )}
                     </div>
                 </div>
             </div>

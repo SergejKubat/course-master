@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { useParams, Link } from "react-router-dom";
+import { useFlag } from "@unleash/proxy-client-react";
 import { Rating } from "react-simple-star-rating";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoIosPricetags } from "react-icons/io";
@@ -11,20 +12,25 @@ import { useAuth } from "../../contexts/AuthContext";
 
 import ModuleContainer from "../../components/container/ModuleContainer";
 import ReviewContainer from "../../components/container/ReviewContainer";
+import CourseCard from "../../components/card/CourseCard";
 import Spinner from "../../components/Spinner";
 import Button from "../../components/form/Button";
 
 import { formatDate } from "../../utils/date";
 
 import ICourseResponse from "../../models/responses/ICourseResponse";
+import ICoursesResponse from "../../models/responses/ICoursesResponse";
 import IModuleResponse from "../../models/responses/IModuleResponse";
 
 const CoursePage = () => {
     const [course, setCourse] = useState<ICourseResponse | null>(null);
     const [modules, setModules] = useState<IModuleResponse[]>([]);
+    const [recommendedCourses, setRecommendedCourses] = useState<ICoursesResponse[]>([]);
     const [isPurchased, setIsPurchased] = useState<boolean>(false);
 
     const { courseId } = useParams();
+
+    const recommendedCoursesEnabled = useFlag("recommendedCourses");
 
     const { account } = useAuth();
 
@@ -37,6 +43,10 @@ const CoursePage = () => {
             setCourse(data);
 
             getModules();
+
+            if (recommendedCoursesEnabled) {
+                getRecommendedCourses(data.category.id);
+            }
         }
     };
 
@@ -47,6 +57,16 @@ const CoursePage = () => {
 
         if (response.ok) {
             setModules(data);
+        }
+    };
+
+    const getRecommendedCourses = async (categoryId: number) => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/${categoryId}/courses`, { method: "GET" });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setRecommendedCourses(data.filter((x: ICoursesResponse) => x.id !== parseInt(courseId!)));
         }
     };
 
@@ -68,7 +88,7 @@ const CoursePage = () => {
         if (account) {
             checkIsPurchased().then();
         }
-    }, [courseId, account]);
+    }, [courseId, account, recommendedCoursesEnabled]);
 
     if (!course) return <Spinner />;
 
@@ -138,10 +158,23 @@ const CoursePage = () => {
 
             <h2 className="mt-10 mb-5 font-semibold text-[20px]">Description</h2>
             <p>{course.description}</p>
+
             <h2 className="mt-10 mb-5 font-semibold text-[20px]">Course Content</h2>
             <ModuleContainer modules={modules} />
+
             <h2 className="mt-10 mb-5 font-semibold text-[20px]">Reviews</h2>
             <ReviewContainer courseId={course.id} isPurchased={isPurchased} />
+
+            {recommendedCoursesEnabled ? (
+                <div>
+                    <h2 className="mt-5 mb-5 text-[28px] text-center">Recommended Courses</h2>
+                    <div className="flex flex-wrap justify-center gap-5">
+                        {recommendedCourses.map((recommendedCourse) => (
+                            <CourseCard course={recommendedCourse} />
+                        ))}
+                    </div>
+                </div>
+            ) : null}
         </section>
     );
 };
