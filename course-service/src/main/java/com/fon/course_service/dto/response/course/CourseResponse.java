@@ -10,26 +10,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseResponse {
-    private long id;
-
     public CourseCategoryResponse category;
-
     public CourseMentorResponse mentor;
-
-    private String title;
-
-    private String description;
-
-    private String thumbnailUrl;
-
-    private String videoUrl;
-
-    private double price;
-
-    private double averageRating;
-
     public int studentsCount;
-
+    private long id;
+    private String title;
+    private String description;
+    private String thumbnailUrl;
+    private String videoUrl;
+    private double price;
+    private double averageRating;
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

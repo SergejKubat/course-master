@@ -9,6 +9,8 @@ import Spinner from "../components/Spinner";
 import ICategoriesResponse from "../models/responses/ICategoriesResponse";
 import ICoursesResponse from "../models/responses/ICoursesResponse";
 
+import { POPULAR_COURSES } from "../constants";
+
 import Logo from "../assets/logo.png";
 
 const HomePage = () => {
@@ -16,7 +18,7 @@ const HomePage = () => {
     const [popularCourses, setPopularCourses] = useState<ICoursesResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const popularCoursesEnabled = useFlag("popularCourses");
+    const popularCoursesEnabled = useFlag(POPULAR_COURSES);
 
     const getCategories = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/`, { method: "GET" });

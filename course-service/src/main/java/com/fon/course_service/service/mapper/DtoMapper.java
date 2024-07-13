@@ -12,10 +12,6 @@ import com.fon.course_service.dto.response.module.ModuleResponse;
 import com.fon.course_service.dto.response.review.ReviewResponse;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 @Service
 public class DtoMapper {
     public CategoriesResponse mapToCategoriesResponse(Category category) {

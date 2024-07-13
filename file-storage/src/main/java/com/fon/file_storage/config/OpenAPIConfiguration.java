@@ -1,4 +1,4 @@
-package com.fon.course_service.config;
+package com.fon.file_storage.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -12,19 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class OpenAPIConfig {
+public class OpenAPIConfiguration {
     @Bean
-    public OpenAPI courseServiceAPI() {
+    public OpenAPI authServiceAPI() {
         List<Server> servers = new ArrayList<>();
 
         servers.add(new Server()
-                .url("http://localhost:8082")
-                .description("Course Service API development server."));
+                .url("http://localhost:8084")
+                .description("File Storage Service API development server."));
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("Course Service API")
-                        .description("Course service for CourseMaster project.")
+                        .title("File Storage Service API")
+                        .description("File storage service for CourseMaster project.")
                         .version("1.0")
                         .contact(new Contact()
                                 .name("Sergej Kubat")

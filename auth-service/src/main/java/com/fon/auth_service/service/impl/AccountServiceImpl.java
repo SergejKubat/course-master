@@ -12,6 +12,7 @@ import com.fon.auth_service.repository.AccountRepository;
 import com.fon.auth_service.repository.RoleRepository;
 import com.fon.auth_service.service.AccountService;
 import com.fon.auth_service.service.mapper.DtoMapper;
+import io.getunleash.Unleash;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,14 +30,18 @@ public class AccountServiceImpl implements AccountService {
 
     private final DtoMapper dtoMapper;
 
+    private final Unleash unleash;
+
     public AccountServiceImpl(AccountRepository accountRepository,
                               RoleRepository roleRepository,
                               PasswordEncoder passwordEncoder,
-                              DtoMapper dtoMapper) {
+                              DtoMapper dtoMapper,
+                              Unleash unleash) {
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.dtoMapper = dtoMapper;
+        this.unleash = unleash;
     }
 
     @Override
@@ -107,6 +112,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        boolean changePasswordEnabled = unleash.isEnabled("changePassword");
+
+        if (!changePasswordEnabled) {
+            throw new UnsupportedOperationException();
+        }
+
         Account currentAccount = getCurrentAccount();
 
         // check if old password is correct

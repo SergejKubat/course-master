@@ -13,6 +13,8 @@ import Spinner from "../components/Spinner";
 import ICategoryResponse from "../models/responses/ICategoryResponse";
 import ICoursesResponse from "../models/responses/ICoursesResponse";
 
+import { SEARCH_CATEGORY_COURSES } from "../constants";
+
 const CategoryPage = () => {
     const [category, setCategory] = useState<ICategoryResponse | null>(null);
     const [courses, setCourses] = useState<ICoursesResponse[]>([]);
@@ -20,7 +22,7 @@ const CategoryPage = () => {
 
     const { categoryId } = useParams();
 
-    const searchCategoryCoursesEnabled = useFlag("searchCategoryCourses");
+    const searchCategoryCoursesEnabled = useFlag(SEARCH_CATEGORY_COURSES);
 
     const debouncedSearchQuery = useDebounce(searchQuery, 500);
 

@@ -15,7 +15,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import java.time.Duration;
 
 @Configuration
-public class RestClientConfig {
+public class RestClientConfiguration {
     @Value("${auth-service.url}")
     private String authServiceUrl;
 

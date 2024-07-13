@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class OpenAPIConfig {
+public class OpenAPIConfiguration {
     @Bean
     public OpenAPI authServiceAPI() {
         String schemeName = "bearerAuth";

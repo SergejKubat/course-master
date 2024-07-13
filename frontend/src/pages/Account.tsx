@@ -13,6 +13,8 @@ import Spinner from "../components/Spinner";
 import IAccountResponse from "../models/responses/IAccountResponse";
 import ICoursesResponse from "../models/responses/ICoursesResponse";
 
+import { SEARCH_AUTHOR_COURSES } from "../constants";
+
 const AccountPage = () => {
     const [account, setAccount] = useState<IAccountResponse | null>(null);
     const [courses, setCourses] = useState<ICoursesResponse[]>([]);
@@ -20,7 +22,7 @@ const AccountPage = () => {
 
     const { accountId } = useParams();
 
-    const searchAuthorCoursesEnabled = useFlag("searchAuthorCourses");
+    const searchAuthorCoursesEnabled = useFlag(SEARCH_AUTHOR_COURSES);
 
     const debouncedSearchQuery = useDebounce(searchQuery, 500);
 

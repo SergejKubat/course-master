@@ -8,7 +8,6 @@ import com.fon.payment_service.dto.response.account.AccountResponse;
 import com.fon.payment_service.dto.response.course.CourseResponse;
 import com.fon.payment_service.dto.response.transaction.TransactionResponse;
 import com.fon.payment_service.exception.BadRequestException;
-import com.fon.payment_service.exception.ResourceNotFoundException;
 import com.fon.payment_service.repository.TransactionRepository;
 import com.fon.payment_service.service.TransactionService;
 import com.fon.payment_service.service.mapper.DtoMapper;

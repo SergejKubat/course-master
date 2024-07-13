@@ -6,7 +6,6 @@ import com.fon.course_service.domain.Category;
 import com.fon.course_service.domain.Course;
 import com.fon.course_service.dto.request.course.CourseRequest;
 import com.fon.course_service.dto.response.account.AccountResponse;
-import com.fon.course_service.dto.response.course.CourseCategoryResponse;
 import com.fon.course_service.dto.response.course.CourseMentorResponse;
 import com.fon.course_service.dto.response.course.CourseResponse;
 import com.fon.course_service.dto.response.course.CoursesResponse;
@@ -18,6 +17,8 @@ import com.fon.course_service.repository.CourseRepository;
 import com.fon.course_service.service.CourseService;
 import com.fon.course_service.service.mapper.DtoMapper;
 import com.fon.course_service.service.mapper.EntityMapper;
+import com.fon.course_service.utils.FeatureFlags;
+import io.getunleash.Unleash;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -36,34 +37,50 @@ public class CourseServiceImpl implements CourseService {
     private final DtoMapper dtoMapper;
     private final EntityMapper entityMapper;
 
+    private final Unleash unleash;
+
     public CourseServiceImpl(CourseRepository courseRepository,
                              CategoryRepository categoryRepository,
                              AuthClient authClient,
                              PaymentClient paymentClient,
                              DtoMapper dtoMapper,
-                             EntityMapper entityMapper) {
+                             EntityMapper entityMapper,
+                             Unleash unleash) {
         this.courseRepository = courseRepository;
         this.categoryRepository = categoryRepository;
         this.authClient = authClient;
         this.paymentClient = paymentClient;
         this.dtoMapper = dtoMapper;
         this.entityMapper = entityMapper;
+        this.unleash = unleash;
     }
 
     @Override
     public List<CoursesResponse> getAllByCategoryId(long categoryId, String query) {
-        return courseRepository.findByCategoryIdAndTitleContainsIgnoreCase(categoryId, query)
+        boolean searchCategoryCoursesEnabled = unleash.isEnabled(FeatureFlags.SEARCH_CATEGORY_COURSES);
+
+        return courseRepository.findByCategoryIdAndTitleContainsIgnoreCase(categoryId,
+                        searchCategoryCoursesEnabled ? query : "")
                 .stream().map(dtoMapper::mapToCoursesResponse).toList();
     }
 
     @Override
     public List<CoursesResponse> getAllByMentorId(long mentorId, String query) {
-        return courseRepository.findByMentorIdAndTitleContainsIgnoreCase(mentorId, query)
+        boolean searchAuthorCoursesEnabled = unleash.isEnabled(FeatureFlags.SEARCH_AUTHOR_COURSES);
+
+        return courseRepository.findByMentorIdAndTitleContainsIgnoreCase(mentorId,
+                        searchAuthorCoursesEnabled ? query : "")
                 .stream().map(dtoMapper::mapToCoursesResponse).toList();
     }
 
     @Override
     public List<CoursesResponse> getPopular() {
+        boolean popularCoursesEnabled = unleash.isEnabled(FeatureFlags.POPULAR_COURSES);
+
+        if (!popularCoursesEnabled) {
+            throw new UnsupportedOperationException();
+        }
+
         Pageable pageable = PageRequest.of(0, 5,
                 Sort.by(Sort.Direction.DESC, "averageRating"));
 

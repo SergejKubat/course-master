@@ -22,6 +22,8 @@ import ICourseResponse from "../../models/responses/ICourseResponse";
 import ICoursesResponse from "../../models/responses/ICoursesResponse";
 import IModuleResponse from "../../models/responses/IModuleResponse";
 
+import { RECOMMENDED_COURSES } from "../../constants";
+
 const CoursePage = () => {
     const [course, setCourse] = useState<ICourseResponse | null>(null);
     const [modules, setModules] = useState<IModuleResponse[]>([]);
@@ -30,7 +32,7 @@ const CoursePage = () => {
 
     const { courseId } = useParams();
 
-    const recommendedCoursesEnabled = useFlag("recommendedCourses");
+    const recommendedCoursesEnabled = useFlag(RECOMMENDED_COURSES);
 
     const { account } = useAuth();
 

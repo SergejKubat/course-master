@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -30,7 +30,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
-        configuration.setMaxAge(3600l);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 

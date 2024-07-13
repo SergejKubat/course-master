@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { useFlag } from "@unleash/proxy-client-react";
 import { enqueueSnackbar } from "notistack";
 
 import { useAuth } from "../contexts/AuthContext";
@@ -13,6 +14,8 @@ import { uploadFile } from "../utils/file";
 
 import IUpdateAccountRequest from "../models/requests/IUpdateAccountRequest";
 
+import { CHANGE_PASSWORD } from "../constants";
+
 const MyAccountPage = () => {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -22,6 +25,8 @@ const MyAccountPage = () => {
     const [touched, setTouched] = useState<boolean>(false);
     const [updating, setUpdating] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
+
+    const changePasswordEnaled = useFlag(CHANGE_PASSWORD);
 
     const { account, token, refreshAccount, authFetch } = useAuth();
 
@@ -115,7 +120,7 @@ const MyAccountPage = () => {
                 updating={updating}
                 saveChanges={saveChanges}
             />
-            <AccountSecurity />
+            {changePasswordEnaled ? <AccountSecurity /> : null}
         </section>
     );
 };

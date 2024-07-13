@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class OpenAPIConfig {
+public class OpenAPIConfiguration {
     @Bean
     public OpenAPI courseServiceAPI() {
         List<Server> servers = new ArrayList<>();

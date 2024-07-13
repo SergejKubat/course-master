@@ -11,7 +11,6 @@ import com.fon.course_service.repository.ModuleRepository;
 import com.fon.course_service.service.ModuleService;
 import com.fon.course_service.service.mapper.DtoMapper;
 import com.fon.course_service.service.mapper.EntityMapper;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
