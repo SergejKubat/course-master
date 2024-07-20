@@ -1,4 +1,4 @@
-package com.fon.api_gateway.util;
+package com.fon.api_gateway.utils;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

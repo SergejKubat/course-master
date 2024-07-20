@@ -1,6 +1,6 @@
 package com.fon.api_gateway.filter;
 
-import com.fon.api_gateway.util.JwtUtil;
+import com.fon.api_gateway.utils.JwtUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
