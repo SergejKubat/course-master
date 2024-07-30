@@ -69,7 +69,7 @@ const ImageUpload = (props: ImageUploadProps) => {
             {imagePreview ? (
                 <div className="flex flex-col items-center">
                     <img src={imagePreview} alt="Upload Image" width={props.width} height={props.height} />
-                    <p className="mt-2.5 mb-0 text-sm text-center text-gray-600 cursor-pointer" onClick={onFileInputClick}>
+                    <p className="mt-2.5 mb-0 text-sm text-center text-gray-300 cursor-pointer" onClick={onFileInputClick}>
                         Upload Other Image
                     </p>
                 </div>

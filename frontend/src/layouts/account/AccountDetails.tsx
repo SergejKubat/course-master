@@ -35,7 +35,7 @@ const AccountDetails = (props: IAccountDetailsProps) => {
                         height={300}
                         image={props.avatar}
                         setImage={props.setAvatar}
-                        className="w-[300px] h-[300px] mb-10"
+                        className="w-[300px] h-[325px] mb-10"
                     />
                     <p className="font-semibold text-center text-[18px]">@{props.username}</p>
                 </div>
