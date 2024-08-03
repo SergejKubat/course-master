@@ -18,7 +18,7 @@ const CategoryCard = (props: ICategoryCardProps) => {
                 </div>
             </div>
             <div className="py-3 px-4 rounded-2xl">
-                <p className="text-[14px] text-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, minus!</p>
+                <p className="text-[14px] dark:text-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, minus!</p>
                 <div className="flex justify-end mt-3">
                     <Link to={`/categories/${props.category.id}`}>
                         <Button className="py-2 px-4 font-medium text-sm text-center text-white bg-blue-500 rounded-2xl hover:bg-blue-600">

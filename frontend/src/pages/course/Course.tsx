@@ -162,7 +162,7 @@ const CoursePage = () => {
             <p>{course.description}</p>
 
             <h2 className="mt-10 mb-5 font-semibold text-[20px]">Course Content</h2>
-            <ModuleContainer modules={modules} />
+            <ModuleContainer modules={modules} isPurchased={isPurchased} />
 
             <h2 className="mt-10 mb-5 font-semibold text-[20px]">Reviews</h2>
             <ReviewContainer courseId={course.id} isPurchased={isPurchased} />
@@ -172,7 +172,7 @@ const CoursePage = () => {
                     <h2 className="mt-5 mb-5 text-[28px] text-center">Recommended Courses</h2>
                     <div className="flex flex-wrap justify-center gap-5">
                         {recommendedCourses.map((recommendedCourse) => (
-                            <CourseCard course={recommendedCourse} />
+                            <CourseCard key={recommendedCourse.id} course={recommendedCourse} />
                         ))}
                     </div>
                 </div>

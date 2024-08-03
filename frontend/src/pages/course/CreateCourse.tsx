@@ -40,8 +40,8 @@ const CreateCoursePage = () => {
     const [price, setPrice] = useState<string>("");
     const [isPublic, setIsPublic] = useState<boolean>(false);
     const [selectedCategoryId, setSelectedCategoryId] = useState<number>(-1);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [touched, setTouched] = useState<boolean>(false);
+    // const [loading, setLoading] = useState<boolean>(false);
+    const [touched /*, setTouched*/] = useState<boolean>(false);
 
     return (
         <section className="flex flex-col max-w-[1200px] mx-auto">

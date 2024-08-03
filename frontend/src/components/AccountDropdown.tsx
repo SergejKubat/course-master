@@ -28,7 +28,7 @@ const AccountDropdown = () => {
         <div className="absolute top-[-8px] right-0 flex justify-between items-center h-24 py-0 md:py-0">
             <div className="flex flex-col items-end w-full p-4 select-none">
                 <div
-                    className="flex items-center gap-0 w-fit pb-1 bg-gray-800 rounded-xl cursor-pointer hover:bg-gray-900 sm:gap-x-3 sm:py-1.5 sm:px-3"
+                    className="flex items-center gap-0 w-fit pb-1 bg-blue-800 dark:bg-gray-800 rounded-xl cursor-pointer hover:bg-blue-900 dark:hover:bg-gray-900 sm:gap-x-3 sm:py-1.5 sm:px-3"
                     onClick={() => {
                         if (!isDropdownOpen) {
                             setIsDropdownOpen(true);
@@ -48,22 +48,22 @@ const AccountDropdown = () => {
                     )}
                     <div>
                         <div className="hidden sm:block">
-                            <p className="font-semibold">
+                            <p className="font-semibold text-white">
                                 {account.firstName} {account.lastName}
                             </p>
-                            <p className="text-[14px]">@{account.username}</p>
+                            <p className="text-[14px] text-white">@{account.username}</p>
                             {isDropdownOpen ? (
                                 <OutsideAlerter callback={() => setIsDropdownOpen(false)}>
-                                    <div className="absolute top-0 right-[16px] w-[180px] bg-gray-800 rounded-xl shadow-lg z-10 sm:top-[80px]">
+                                    <div className="absolute top-0 right-[16px] w-[180px] bg-blue-800 dark:bg-gray-800 rounded-xl shadow-lg z-10 sm:top-[80px]">
                                         <Link
                                             to="/account"
-                                            className="block py-2 px-4 text-[16px] text-gray-300 border-b border-gray-300 hover:text-gray-400"
+                                            className="block py-2 px-4 text-[16px] text-white dark:text-gray-300 border-b border-gray-300 hover:text-gray-400"
                                             onClick={() => setIsDropdownOpen(false)}
                                         >
                                             Account
                                         </Link>
                                         <Button
-                                            className="block w-full py-2 px-4 text-left text-gray-300 hover:text-gray-400"
+                                            className="block w-full py-2 px-4 text-left text-white dark:text-gray-300 hover:text-gray-400"
                                             onClick={handleLogout}
                                         >
                                             Log Out

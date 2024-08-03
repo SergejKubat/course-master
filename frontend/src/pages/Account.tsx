@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import { useFlag } from "@unleash/proxy-client-react";
-import { FaSearch } from "react-icons/fa";
 
 import useDebounce from "../hooks/useDebounce";
 
 import CourseCard from "../components/card/CourseCard";
-import Input from "../components/form/Input";
+import Search from "../components/form/Search";
 import Spinner from "../components/Spinner";
 
 import IAccountResponse from "../models/responses/IAccountResponse";
@@ -87,19 +86,7 @@ const AccountPage = () => {
                 <h2 className="mt-10 mb-5 text-center font-semibold text-[20px]">About Me</h2>
                 <p>{account.description}</p>
 
-                {searchAuthorCoursesEnabled ? (
-                    <div className="flex justify-center mt-10">
-                        <label className="relative">
-                            <FaSearch className="w-[18px] h-[18px] absolute top-1/2 left-3 transform -translate-y-1/2" />
-                            <Input
-                                placeholder="Search..."
-                                value={searchQuery}
-                                className="w-[300px] pl-10 text-[18px] rounded-lg xs:w-[350px] xl:w-[376px]"
-                                onChange={setSearchQuery}
-                            />
-                        </label>
-                    </div>
-                ) : null}
+                {searchAuthorCoursesEnabled ? <Search query={searchQuery} setQuery={setSearchQuery} /> : null}
 
                 <div className="mt-5">
                     <h2 className="mb-5 text-[28px] text-center">Courses {courses.length > 0 ? `(${courses.length})` : null}</h2>

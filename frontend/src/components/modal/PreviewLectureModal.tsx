@@ -12,9 +12,9 @@ interface IPreviewLectureModalProps {
 const PreviewLectureModal = (props: IPreviewLectureModalProps) => {
     return (
         <div className="fixed inset-0 flex justify-center items-center z-50">
-            <div className="relative w-[640px] py-6 px-4 bg-gray-950 rounded-2xl">
+            <div className="relative w-[640px] py-6 px-4 bg-white dark:bg-gray-950 rounded-2xl">
                 <FaTimes
-                    className="absolute top-[12px] right-[12px] text-xl text-gray-100 cursor-pointer hover:text-gray-200"
+                    className="absolute top-[12px] right-[12px] text-xl text-gray-600 dark:text-gray-100 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200"
                     onClick={() => props.setShowModal(false)}
                 />
                 <h2 className="mb-2 text-[24px] text-center">{props.lecture.title}</h2>

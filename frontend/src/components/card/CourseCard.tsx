@@ -20,7 +20,7 @@ const CourseCard = (props: ICourseCardProps) => {
                 </div>
             </div>
             <div className="py-3 px-4 rounded-2xl">
-                <p className="text-[14px] text-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, minus!</p>
+                <p className="text-[14px] dark:text-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, minus!</p>
                 <div className="flex items-center gap-x-2 my-1">
                     <Rating
                         iconsCount={5}

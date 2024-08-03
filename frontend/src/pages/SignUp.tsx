@@ -94,7 +94,7 @@ const SignUpPage = () => {
 
     return (
         <section className="flex justify-center items-center">
-            <div className="w-[400px] p-6 bg-gray-950 rounded-3xl">
+            <div className="w-[400px] p-6 bg-gray-100 dark:bg-gray-950 rounded-3xl">
                 <h2 className="mb-5 font-semibold text-[32px] text-center">Sign Up</h2>
                 <form onSubmit={signUp}>
                     <div className="flex gap-3 mb-2">

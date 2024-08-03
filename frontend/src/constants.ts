@@ -10,3 +10,4 @@ export const SEARCH_AUTHOR_COURSES = "searchAuthorCourses";
 export const POPULAR_COURSES = "popularCourses";
 export const RECOMMENDED_COURSES = "recommendedCourses";
 export const CHANGE_PASSWORD = "changePassword";
+export const DARK_MODE = "darkMode";

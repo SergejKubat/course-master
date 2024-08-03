@@ -74,7 +74,7 @@ public class DtoMapper {
         lectureResponse.setId(lecture.getId());
         lectureResponse.setTitle(lecture.getTitle());
         lectureResponse.setDescription(lecture.getDescription());
-        lectureResponse.setAttachmentUrl(lecture.isPublic() ? lecture.getAttachmentUrl() : "");
+        lectureResponse.setAttachmentUrl(lecture.getAttachmentUrl());
         lectureResponse.setPublic(lecture.isPublic());
         lectureResponse.setCreatedAt(lecture.getCreatedAt());
         lectureResponse.setUpdatedAt(lecture.getUpdatedAt());

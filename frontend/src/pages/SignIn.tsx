@@ -65,8 +65,8 @@ const SignInPage = () => {
     }, [authenticated]);
 
     return (
-        <section className="flex justify-center items-center">
-            <div className="w-[400px] p-6 bg-gray-950 rounded-3xl">
+        <section className="flex justify-center items-center p-6">
+            <div className="w-[400px] p-6 bg-gray-100 dark:bg-gray-950 rounded-3xl">
                 <h2 className="mb-5 font-semibold text-[32px] text-center">Sign In</h2>
                 <form onSubmit={signIn}>
                     <label htmlFor="emailInput" className="block mb-2 font-medium text-sm">

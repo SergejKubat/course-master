@@ -83,7 +83,7 @@ const HomePage = () => {
                     <h2 className="mb-5 text-[28px] text-center">Popular Courses</h2>
                     <div className="flex flex-wrap justify-center gap-5">
                         {popularCourses.map((popularCourse) => (
-                            <CourseCard course={popularCourse} />
+                            <CourseCard key={popularCourse.id} course={popularCourse} />
                         ))}
                     </div>
                 </div>

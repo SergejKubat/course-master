@@ -11,6 +11,7 @@ import ILectureResponse from "../../models/responses/ILectureResponse";
 
 interface IModuleContainerProps {
     modules: IModuleResponse[];
+    isPurchased: boolean;
 }
 
 const ModuleContainer = (props: IModuleContainerProps) => {
@@ -29,7 +30,13 @@ const ModuleContainer = (props: IModuleContainerProps) => {
                 </div>
             </div>
             {props.modules.map((module, index) => (
-                <ModuleCard key={module.id} module={module} isOpen={index === 0} setSelectedLecture={setSelectedLecture} />
+                <ModuleCard
+                    key={module.id}
+                    module={module}
+                    isOpen={index === 0}
+                    isPurchased={props.isPurchased}
+                    setSelectedLecture={setSelectedLecture}
+                />
             ))}
 
             {selectedLecture ? <PreviewLectureModal lecture={selectedLecture} setShowModal={() => setSelectedLecture(null)} /> : null}
