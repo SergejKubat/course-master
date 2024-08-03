@@ -12,6 +12,7 @@ import com.fon.payment_service.repository.TransactionRepository;
 import com.fon.payment_service.service.TransactionService;
 import com.fon.payment_service.service.mapper.DtoMapper;
 import com.fon.payment_service.service.mapper.EntityMapper;
+import io.getunleash.Unleash;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,16 +27,20 @@ public class TransactionServiceImpl implements TransactionService {
     private final DtoMapper dtoMapper;
     private final EntityMapper entityMapper;
 
+    private final Unleash unleash;
+
     public TransactionServiceImpl(TransactionRepository transactionRepository,
                                   AuthClient authClient,
                                   CourseClient courseClient,
                                   DtoMapper dtoMapper,
-                                  EntityMapper entityMapper) {
+                                  EntityMapper entityMapper,
+                                  Unleash unleash) {
         this.transactionRepository = transactionRepository;
         this.authClient = authClient;
         this.courseClient = courseClient;
         this.dtoMapper = dtoMapper;
         this.entityMapper = entityMapper;
+        this.unleash = unleash;
     }
 
     @Override
@@ -84,7 +89,11 @@ public class TransactionServiceImpl implements TransactionService {
         // create new transaction
         Transaction transaction = entityMapper.mapToTransactionEntity(transactionRequest);
 
-        transaction.setAmount(courseResponse.getPrice());
+        boolean coursesDiscountEnabled = unleash.isEnabled("coursesDiscount");
+
+        transaction.setAmount(coursesDiscountEnabled ?
+                courseResponse.getPrice() - (courseResponse.getPrice() / 10)
+                : courseResponse.getPrice());
 
         return dtoMapper.mapToTransactionResponse(transactionRepository.save(transaction));
     }

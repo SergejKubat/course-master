@@ -22,7 +22,7 @@ import ICourseResponse from "../../models/responses/ICourseResponse";
 import ICoursesResponse from "../../models/responses/ICoursesResponse";
 import IModuleResponse from "../../models/responses/IModuleResponse";
 
-import { RECOMMENDED_COURSES } from "../../constants";
+import { RECOMMENDED_COURSES, COURSES_DISCOUNT } from "../../constants";
 
 const CoursePage = () => {
     const [course, setCourse] = useState<ICourseResponse | null>(null);
@@ -33,6 +33,7 @@ const CoursePage = () => {
     const { courseId } = useParams();
 
     const recommendedCoursesEnabled = useFlag(RECOMMENDED_COURSES);
+    const coursesDiscount = useFlag(COURSES_DISCOUNT);
 
     const { account } = useAuth();
 
@@ -136,7 +137,10 @@ const CoursePage = () => {
                         </div>
                         <div className="flex items-center gap-x-2 mt-2">
                             <IoIosPricetags className="text-[20px]" />
-                            <p>{course.price} $</p>
+                            <p>
+                                <span className={coursesDiscount ? "line-through" : ""}>{course.price}</span>{" "}
+                                {coursesDiscount ? (course.price - course.price / 10).toFixed(2) : null} $
+                            </p>
                         </div>
                         <div className="flex items-center gap-x-2 mt-2">
                             <MdUpdate className="text-[20px]" />

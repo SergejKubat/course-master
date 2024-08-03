@@ -10,7 +10,7 @@ import "./index.css";
 const config = {
     url: import.meta.env.VITE_UNLEASH_API_BASE_URL,
     clientKey: import.meta.env.VITE_UNLEASH_CLIENT_TOKEN,
-    refreshInterval: 60,
+    refreshInterval: 6000,
     appName: "frontend"
 };
 

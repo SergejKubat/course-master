@@ -1,17 +1,29 @@
 import { Link } from "react-router-dom";
+import { useFlag } from "@unleash/proxy-client-react";
 
 import { useAuth } from "../contexts/AuthContext";
 
 import AccountDropdown from "../components/AccountDropdown";
+
+import { COURSES_DISCOUNT } from "../constants";
 
 import Logo from "../assets/logo.png";
 
 const Navbar = () => {
     const { account } = useAuth();
 
+    const coursesDiscount = useFlag(COURSES_DISCOUNT);
+
     return (
         <header className="mb-10">
-            <nav className="bg-blue-600 dark:bg-gray-950">
+            {coursesDiscount ? (
+                <div className="py-3 text-center bg-green-400">
+                    <p className="text-[18px] text-black">
+                        <b>10%</b> discount on all courses!
+                    </p>
+                </div>
+            ) : null}
+            <nav className="relative bg-blue-600 dark:bg-gray-950">
                 <div className="flex justify-between items-center mx-auto p-4">
                     <Link to="/" className="flex items-center gap-3">
                         <img src={Logo} alt="CourseMaster Logo" width={48} height={48} />

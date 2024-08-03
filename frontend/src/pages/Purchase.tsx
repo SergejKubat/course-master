@@ -1,6 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 
 import { useParams, useNavigate } from "react-router-dom";
+import { useFlag } from "@unleash/proxy-client-react";
 import validator from "validator";
 import { enqueueSnackbar } from "notistack";
 import { FaShoppingCart } from "react-icons/fa";
@@ -18,6 +19,8 @@ import { formatDate } from "../utils/date";
 import ICourseResponse from "../models/responses/ICourseResponse";
 import ITransactionRequest from "../models/requests/ITransactionRequest";
 
+import { COURSES_DISCOUNT } from "../constants";
+
 const PurchasePage = () => {
     const [cardNumber, setCardNumber] = useState<string>("");
     const [expiration, setExpiration] = useState<string>("");
@@ -32,6 +35,8 @@ const PurchasePage = () => {
     const navigate = useNavigate();
 
     const { account, authFetch } = useAuth();
+
+    const coursesDiscount = useFlag(COURSES_DISCOUNT);
 
     const getCourse = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/courses/${courseId}`, { method: "GET" });
@@ -191,7 +196,11 @@ const PurchasePage = () => {
                             onChange={setZip}
                         />
                         <div className="flex items-center gap-x-2 my-4">
-                            <p className="text-gray-400">Price:</p> <p className="text-[24px] font-semibold">19.99 $</p>
+                            <p className="text-gray-400">Price:</p>{" "}
+                            <p className="text-[24px] font-semibold">
+                                <span className={coursesDiscount ? "line-through" : ""}>{course.price}</span>{" "}
+                                {coursesDiscount ? (course.price - course.price / 10).toFixed(2) : null} $
+                            </p>
                         </div>
                         <Button
                             disabled={loading}
