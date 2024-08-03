@@ -18,10 +18,14 @@ interface IModuleCardProps {
 }
 
 const ModuleCard = (props: IModuleCardProps) => {
-    const darkMode = useFlag(DARK_MODE);
+    const darkModeEnabled = useFlag(DARK_MODE);
 
     return (
-        <Collapsible trigger={props.module.title} open={props.isOpen} triggerStyle={{ backgroundColor: darkMode ? "#171941" : "#2563eb" }}>
+        <Collapsible
+            trigger={props.module.title}
+            open={props.isOpen}
+            triggerStyle={{ backgroundColor: darkModeEnabled ? "#171941" : "#2563eb" }}
+        >
             <p className="mb-3 text-[14px] dark:text-gray-300">{props.module.description}</p>
             {props.module.lectures.map((lecture) => (
                 <LectureCard

@@ -36,7 +36,7 @@ const PurchasePage = () => {
 
     const { account, authFetch } = useAuth();
 
-    const coursesDiscount = useFlag(COURSES_DISCOUNT);
+    const coursesDiscountEnabled = useFlag(COURSES_DISCOUNT);
 
     const getCourse = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/courses/${courseId}`, { method: "GET" });
@@ -198,8 +198,8 @@ const PurchasePage = () => {
                         <div className="flex items-center gap-x-2 my-4">
                             <p className="text-gray-400">Price:</p>{" "}
                             <p className="text-[24px] font-semibold">
-                                <span className={coursesDiscount ? "line-through" : ""}>{course.price}</span>{" "}
-                                {coursesDiscount ? (course.price - course.price / 10).toFixed(2) : null} $
+                                <span className={coursesDiscountEnabled ? "line-through" : ""}>{course.price}</span>{" "}
+                                {coursesDiscountEnabled ? (course.price - course.price / 10).toFixed(2) : null} $
                             </p>
                         </div>
                         <Button

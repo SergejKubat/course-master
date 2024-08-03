@@ -33,7 +33,7 @@ const CoursePage = () => {
     const { courseId } = useParams();
 
     const recommendedCoursesEnabled = useFlag(RECOMMENDED_COURSES);
-    const coursesDiscount = useFlag(COURSES_DISCOUNT);
+    const coursesDiscountEnabled = useFlag(COURSES_DISCOUNT);
 
     const { account } = useAuth();
 
@@ -138,8 +138,8 @@ const CoursePage = () => {
                         <div className="flex items-center gap-x-2 mt-2">
                             <IoIosPricetags className="text-[20px]" />
                             <p>
-                                <span className={coursesDiscount ? "line-through" : ""}>{course.price}</span>{" "}
-                                {coursesDiscount ? (course.price - course.price / 10).toFixed(2) : null} $
+                                <span className={coursesDiscountEnabled ? "line-through" : ""}>{course.price}</span>{" "}
+                                {coursesDiscountEnabled ? (course.price - course.price / 10).toFixed(2) : null} $
                             </p>
                         </div>
                         <div className="flex items-center gap-x-2 mt-2">

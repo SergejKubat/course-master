@@ -26,7 +26,7 @@ import ScrollToTop from "./components/ScrollToTop.tsx";
 import { DARK_MODE } from "./constants.ts";
 
 const App = () => {
-    const darkMode = useFlag(DARK_MODE);
+    const darkModeEnabled = useFlag(DARK_MODE);
 
     // const unleashClient = useUnleashClient();
 
@@ -44,7 +44,7 @@ const App = () => {
     // }, [unleashClient]);
 
     return (
-        <div className={darkMode ? "dark bg-[#111827] text-white" : "text-gray-700"}>
+        <div className={darkModeEnabled ? "dark bg-[#111827] text-white" : "text-gray-700"}>
             <Router>
                 <AuthProvider>
                     <SnackbarProvider autoHideDuration={3000} />

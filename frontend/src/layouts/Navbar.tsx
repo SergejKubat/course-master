@@ -1,22 +1,30 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useFlag } from "@unleash/proxy-client-react";
 
 import { useAuth } from "../contexts/AuthContext";
 
 import AccountDropdown from "../components/AccountDropdown";
 
-import { COURSES_DISCOUNT } from "../constants";
+import { COURSES_DISCOUNT, ACCOUNT_DROPDOWN } from "../constants";
 
 import Logo from "../assets/logo.png";
 
 const Navbar = () => {
-    const { account } = useAuth();
+    const navigate = useNavigate();
 
-    const coursesDiscount = useFlag(COURSES_DISCOUNT);
+    const { account, logout } = useAuth();
+
+    const coursesDiscountEnabled = useFlag(COURSES_DISCOUNT);
+    const accountDropdownEnabled = useFlag(ACCOUNT_DROPDOWN);
+
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
 
     return (
         <header className="mb-10">
-            {coursesDiscount ? (
+            {coursesDiscountEnabled ? (
                 <div className="py-3 text-center bg-green-400">
                     <p className="text-[18px] text-black">
                         <b>10%</b> discount on all courses!
@@ -33,7 +41,30 @@ const Navbar = () => {
                     </Link>
                     <div>
                         {account ? (
-                            <AccountDropdown />
+                            <>
+                                {accountDropdownEnabled ? (
+                                    <AccountDropdown />
+                                ) : (
+                                    <ul className="flex gap-5">
+                                        <li>
+                                            <Link
+                                                to="/account"
+                                                className="block py-2 px-3 font-semibold text-white rounded-2xl hover:text-blue-100 dark:hover:text-blue-400"
+                                            >
+                                                Account
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <p
+                                                className="block py-2 px-3 font-semibold text-white rounded-2xl cursor-pointer hover:text-blue-100 dark:hover:text-blue-400"
+                                                onClick={handleLogout}
+                                            >
+                                                Logout
+                                            </p>
+                                        </li>
+                                    </ul>
+                                )}
+                            </>
                         ) : (
                             <ul className="flex gap-5">
                                 <li>

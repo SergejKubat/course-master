@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { useNavigate, Link } from "react-router-dom";
+import { useVariant, IVariant } from "@unleash/proxy-client-react";
 import { FaUser } from "react-icons/fa";
 
 import { useAuth } from "../contexts/AuthContext";
@@ -9,12 +10,16 @@ import OutsideAlerter from "../hooks/useOutsideClick";
 
 import Button from "./form/Button";
 
+import { ACCOUNT_DROPDOWN } from "../constants";
+
 const AccountDropdown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
     const { account, logout } = useAuth();
+
+    const accountDropdownVariant: Partial<IVariant> = useVariant(ACCOUNT_DROPDOWN);
 
     const handleLogout = () => {
         setIsDropdownOpen(false);
@@ -35,35 +40,41 @@ const AccountDropdown = () => {
                         }
                     }}
                 >
-                    {account.avatar ? (
-                        <img
-                            src={account.avatar}
-                            alt={account.username}
-                            width={48}
-                            height={48}
-                            className="w-[48px] h-[48px] rounded-full"
-                        />
-                    ) : (
-                        <FaUser className="w-[36px] h-[36px] text-gray-300" />
-                    )}
+                    {accountDropdownVariant.name === "accountAvatar" ? (
+                        <>
+                            {account.avatar ? (
+                                <img
+                                    src={account.avatar}
+                                    alt={account.username}
+                                    width={48}
+                                    height={48}
+                                    className="w-[48px] h-[48px] rounded-full"
+                                />
+                            ) : (
+                                <FaUser className="w-[36px] h-[36px] text-gray-300" />
+                            )}
+                        </>
+                    ) : null}
                     <div>
                         <div className="hidden sm:block">
                             <p className="font-semibold text-white">
                                 {account.firstName} {account.lastName}
                             </p>
-                            <p className="text-[14px] text-white">@{account.username}</p>
+                            {accountDropdownVariant.name === "accountDetails" ? (
+                                <p className="text-[14px] text-white">@{account.username}</p>
+                            ) : null}
                             {isDropdownOpen ? (
                                 <OutsideAlerter callback={() => setIsDropdownOpen(false)}>
                                     <div className="absolute top-0 right-[16px] w-[180px] bg-blue-800 dark:bg-gray-800 rounded-xl shadow-lg z-10 sm:top-[80px]">
                                         <Link
                                             to="/account"
-                                            className="block py-2 px-4 text-[16px] text-white dark:text-gray-300 border-b border-gray-300 hover:text-gray-400"
+                                            className="block py-2 px-4 text-[16px] text-white dark:text-gray-300 border-b border-gray-300 hover:text-gray-200 dark:hover:text-gray-400"
                                             onClick={() => setIsDropdownOpen(false)}
                                         >
                                             Account
                                         </Link>
                                         <Button
-                                            className="block w-full py-2 px-4 text-left text-white dark:text-gray-300 hover:text-gray-400"
+                                            className="block w-full py-2 px-4 text-left text-white dark:text-gray-300 hover:text-gray-200 dark:hover:text-gray-400"
                                             onClick={handleLogout}
                                         >
                                             Log Out
