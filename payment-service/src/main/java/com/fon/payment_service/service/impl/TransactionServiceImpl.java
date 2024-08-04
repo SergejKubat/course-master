@@ -93,7 +93,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         transaction.setAmount(coursesDiscountEnabled ?
                 courseResponse.getPrice() - (courseResponse.getPrice() / 10)
-                : courseResponse.getPrice());
+                :
+                courseResponse.getPrice()
+        );
 
         return dtoMapper.mapToTransactionResponse(transactionRepository.save(transaction));
     }
