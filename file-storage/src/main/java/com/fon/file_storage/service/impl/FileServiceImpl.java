@@ -1,6 +1,6 @@
 package com.fon.file_storage.service.impl;
 
-import com.fon.file_storage.service.FileStorageService;
+import com.fon.file_storage.service.FileService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -16,11 +16,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
-public class FileStorageServiceImpl implements FileStorageService {
+public class FileServiceImpl implements FileService {
     private final Path fileStoragePath;
     private final String fileStorageLocation;
 
-    public FileStorageServiceImpl() {
+    public FileServiceImpl() {
         String currentWorkingDirectory = System.getProperty("user.dir");
 
         this.fileStorageLocation = currentWorkingDirectory + "/file-storage/src/main/resources/storage";

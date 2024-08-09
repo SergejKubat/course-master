@@ -1,7 +1,7 @@
 package com.fon.file_storage.controller;
 
 import com.fon.file_storage.dto.response.FileUploadResponse;
-import com.fon.file_storage.service.FileStorageService;
+import com.fon.file_storage.service.FileService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
@@ -18,10 +18,10 @@ import java.io.IOException;
 @Tag(name = "Files")
 @RestController
 @RequestMapping("/api/files")
-public class FileStorageController {
-    private final FileStorageService fileStorageService;
+public class FileController {
+    private final FileService fileStorageService;
 
-    public FileStorageController(FileStorageService fileStorageService) {
+    public FileController(FileService fileStorageService) {
         this.fileStorageService = fileStorageService;
     }
 
@@ -37,8 +37,6 @@ public class FileStorageController {
                 .path("/api/files/download/")
                 .path(fileName)
                 .toUriString();
-
-        String contentType = file.getContentType();
 
         return new ResponseEntity<>(new FileUploadResponse(url), HttpStatus.CREATED);
     }
