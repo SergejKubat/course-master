@@ -13,7 +13,7 @@ export const POPULAR_COURSES: string = "popularCourses";
 
 export const RECOMMENDED_COURSES: string = "recommendedCourses";
 
-export const CHANGE_PASSWORD: string = "changePassword";
+export const STRONG_PASSWORD_POLICY: string = "strongPasswordPolicy";
 
 export const DARK_MODE: string = "darkMode";
 

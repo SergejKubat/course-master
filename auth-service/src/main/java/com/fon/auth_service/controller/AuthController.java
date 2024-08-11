@@ -4,8 +4,10 @@ import com.fon.auth_service.dto.request.LoginRequest;
 import com.fon.auth_service.dto.request.RegisterRequest;
 import com.fon.auth_service.dto.response.AccountResponse;
 import com.fon.auth_service.dto.response.LoginResponse;
+import com.fon.auth_service.exception.BadRequestException;
 import com.fon.auth_service.service.AccountService;
 import com.fon.auth_service.service.impl.JwtService;
+import com.fon.auth_service.service.impl.PasswordValidationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +28,16 @@ public class AuthController {
     private final AccountService accountService;
     private final JwtService jwtService;
 
+    private final PasswordValidationService passwordValidationService;
+
     public AuthController(AuthenticationManager authenticationManager,
                           AccountService accountService,
-                          JwtService jwtService) {
+                          JwtService jwtService,
+                          PasswordValidationService passwordValidationService) {
         this.authenticationManager = authenticationManager;
         this.accountService = accountService;
         this.jwtService = jwtService;
+        this.passwordValidationService = passwordValidationService;
     }
 
     @PostMapping("/register")
@@ -41,6 +47,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        // check password strength
+        if (!passwordValidationService.validatePassword(loginRequest.getPassword())) {
+            throw new BadRequestException(
+                    passwordValidationService.getValidationMessages(loginRequest.getPassword()).get(0)
+            );
+        }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()
                 ));

@@ -12,7 +12,6 @@ import com.fon.auth_service.repository.AccountRepository;
 import com.fon.auth_service.repository.RoleRepository;
 import com.fon.auth_service.service.AccountService;
 import com.fon.auth_service.service.mapper.DtoMapper;
-import io.getunleash.Unleash;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,18 +29,18 @@ public class AccountServiceImpl implements AccountService {
 
     private final DtoMapper dtoMapper;
 
-    private final Unleash unleash;
+    private final PasswordValidationService passwordValidationService;
 
     public AccountServiceImpl(AccountRepository accountRepository,
                               RoleRepository roleRepository,
                               PasswordEncoder passwordEncoder,
                               DtoMapper dtoMapper,
-                              Unleash unleash) {
+                              PasswordValidationService passwordValidationService) {
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.dtoMapper = dtoMapper;
-        this.unleash = unleash;
+        this.passwordValidationService = passwordValidationService;
     }
 
     @Override
@@ -62,6 +61,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse create(RegisterRequest registerRequest) {
+        // check password strength
+        if (!passwordValidationService.validatePassword(registerRequest.getPassword())) {
+            throw new BadRequestException(
+                    passwordValidationService.getValidationMessages(registerRequest.getPassword()).get(0)
+            );
+        }
+
         // check if username already exists
         if (accountRepository.existsByUsername(registerRequest.getUsername())) {
             throw new BadRequestException("Username already exists.");
@@ -112,10 +118,18 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
-        boolean changePasswordEnabled = unleash.isEnabled("changePassword");
+        // check old password strength
+        if (!passwordValidationService.validatePassword(changePasswordRequest.getOldPassword())) {
+            throw new BadRequestException(
+                    passwordValidationService.getValidationMessages(changePasswordRequest.getOldPassword()).get(0)
+            );
+        }
 
-        if (!changePasswordEnabled) {
-            throw new UnsupportedOperationException();
+        // check new password strength
+        if (!passwordValidationService.validatePassword(changePasswordRequest.getNewPassword())) {
+            throw new BadRequestException(
+                    passwordValidationService.getValidationMessages(changePasswordRequest.getNewPassword()).get(0)
+            );
         }
 
         Account currentAccount = getCurrentAccount();

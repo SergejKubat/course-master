@@ -2,11 +2,21 @@ import validator from "validator";
 
 export const validatePassword = (password: string): boolean => {
     return validator.isStrongPassword(password, {
+        minLength: 8,
         minUppercase: 1,
         minLowercase: 1,
         minNumbers: 1,
-        minSymbols: 0,
-        minLength: 6
+        minSymbols: 0
+    });
+};
+
+export const validateStrongPassword = (password: string): boolean => {
+    return validator.isStrongPassword(password, {
+        minLength: 12,
+        minUppercase: 2,
+        minLowercase: 2,
+        minNumbers: 2,
+        minSymbols: 2
     });
 };
 

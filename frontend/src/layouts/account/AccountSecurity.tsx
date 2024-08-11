@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 
+import { useFlag } from "@unleash/proxy-client-react";
 import { enqueueSnackbar } from "notistack";
 
 import { useAuth } from "../../contexts/AuthContext";
@@ -7,9 +8,11 @@ import { useAuth } from "../../contexts/AuthContext";
 import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
 
-import { validatePassword } from "../../utils/validation";
+import { validatePassword, validateStrongPassword } from "../../utils/validation";
 
 import IChangePasswordRequest from "../../models/requests/IChangePasswordRequest";
+
+import { STRONG_PASSWORD_POLICY } from "../../constants";
 
 const AccountSecurity = () => {
     const [oldPassword, setOldPassword] = useState<string>("");
@@ -19,13 +22,27 @@ const AccountSecurity = () => {
 
     const { authFetch, logout } = useAuth();
 
+    const strongPasswordPolicyEnabled = useFlag(STRONG_PASSWORD_POLICY);
+
     const validateForm = () => {
-        if (!validatePassword(oldPassword)) {
-            return false;
+        if (strongPasswordPolicyEnabled) {
+            if (!validateStrongPassword(oldPassword)) {
+                return false;
+            }
+        } else {
+            if (!validatePassword(oldPassword)) {
+                return false;
+            }
         }
 
-        if (!validatePassword(newPassword)) {
-            return false;
+        if (strongPasswordPolicyEnabled) {
+            if (!validateStrongPassword(newPassword)) {
+                return false;
+            }
+        } else {
+            if (!validatePassword(newPassword)) {
+                return false;
+            }
         }
 
         return true;
@@ -77,7 +94,7 @@ const AccountSecurity = () => {
                     value={oldPassword}
                     errorMessage="Password is not valid."
                     className="w-full"
-                    validation={(value) => validatePassword(value)}
+                    validation={(value) => (strongPasswordPolicyEnabled ? validateStrongPassword(value) : validatePassword(value))}
                     onChange={setOldPassword}
                 />
 
@@ -92,7 +109,7 @@ const AccountSecurity = () => {
                     value={newPassword}
                     errorMessage="Password is not valid."
                     className="w-full"
-                    validation={(value) => validatePassword(value)}
+                    validation={(value) => (strongPasswordPolicyEnabled ? validateStrongPassword(value) : validatePassword(value))}
                     onChange={setNewPassword}
                 />
 

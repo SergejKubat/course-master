@@ -1,5 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 
+import { useFlag } from "@unleash/proxy-client-react";
+
 import { useAuth } from "../contexts/AuthContext";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -9,8 +11,11 @@ import { enqueueSnackbar } from "notistack";
 import Input from "../components/form/Input";
 import Button from "../components/form/Button";
 
-import { validatePassword } from "../utils/validation";
+import { validatePassword, validateStrongPassword } from "../utils/validation";
+
 import ILoginRequest from "../models/requests/ILoginRequest";
+
+import { STRONG_PASSWORD_POLICY } from "../constants";
 
 const SignInPage = () => {
     const [email, setEmail] = useState<string>("");
@@ -22,13 +27,21 @@ const SignInPage = () => {
 
     const { login, authenticated } = useAuth();
 
+    const strongPasswordPolicyEnabled = useFlag(STRONG_PASSWORD_POLICY);
+
     const validateForm = (): boolean => {
         if (!validator.isEmail(email)) {
             return false;
         }
 
-        if (!validatePassword(password)) {
-            return false;
+        if (strongPasswordPolicyEnabled) {
+            if (!validateStrongPassword(password)) {
+                return false;
+            }
+        } else {
+            if (!validatePassword(password)) {
+                return false;
+            }
         }
 
         return true;
@@ -97,7 +110,7 @@ const SignInPage = () => {
                         value={password}
                         errorMessage="Password is not valid."
                         className="w-full"
-                        validation={(value) => validatePassword(value)}
+                        validation={(value) => (strongPasswordPolicyEnabled ? validateStrongPassword(value) : validatePassword(value))}
                         onChange={setPassword}
                     />
 
