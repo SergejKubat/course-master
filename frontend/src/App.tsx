@@ -1,10 +1,9 @@
-// import { useEffect } from "react";
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useFlag /* useUnleashClient */ } from "@unleash/proxy-client-react";
 import { SnackbarProvider } from "notistack";
 
 import { AuthProvider, ProtectedRoute } from "./contexts/AuthContext.tsx";
+
+import { useApp } from "./contexts/AppContext.tsx";
 
 import Home from "./pages/Home.tsx";
 import SignInPage from "./pages/SignIn.tsx";
@@ -23,28 +22,11 @@ import Footer from "./layouts/Footer.tsx";
 
 import ScrollToTop from "./components/ScrollToTop.tsx";
 
-import { DARK_MODE } from "./constants.ts";
-
 const App = () => {
-    const darkModeEnabled = useFlag(DARK_MODE);
-
-    // const unleashClient = useUnleashClient();
-
-    // useEffect(() => {
-    //     unleashClient.start();
-
-    //     unleashClient.on("ready", () => {
-    //         const enabledImpression = unleashClient.isEnabled("darkMode");
-    //         console.log(enabledImpression);
-    //     });
-
-    //     unleashClient.on("impression", (impressionEvent: object) => {
-    //         console.log("impression: ", impressionEvent);
-    //     });
-    // }, [unleashClient]);
+    const { darkMode } = useApp();
 
     return (
-        <div className={darkModeEnabled ? "dark bg-[#111827] text-white" : "text-gray-700"}>
+        <div className={darkMode ? "dark bg-[#111827] text-white" : "text-gray-700"}>
             <Router>
                 <AuthProvider>
                     <SnackbarProvider autoHideDuration={3000} />

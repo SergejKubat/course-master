@@ -44,6 +44,7 @@ public class DtoMapper {
         coursesResponse.setThumbnailUrl(course.getThumbnailUrl());
         coursesResponse.setPrice(course.getPrice());
         coursesResponse.setAverageRating(course.getAverageRating());
+        coursesResponse.setStudentsCount(course.getStudentsCount());
 
         return coursesResponse;
     }
@@ -62,6 +63,7 @@ public class DtoMapper {
         courseResponse.setVideoUrl(course.getVideoUrl());
         courseResponse.setPrice(course.getPrice());
         courseResponse.setAverageRating(course.getAverageRating());
+        courseResponse.setStudentsCount(course.getStudentsCount());
         courseResponse.setCreatedAt(course.getCreatedAt());
         courseResponse.setUpdatedAt(course.getUpdatedAt());
 

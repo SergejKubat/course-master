@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { Rating } from "react-simple-star-rating";
+import { PiStudentFill } from "react-icons/pi";
 
 import Button from "../form/Button";
 
@@ -20,7 +21,13 @@ const CourseCard = (props: ICourseCardProps) => {
                 </div>
             </div>
             <div className="py-3 px-4 rounded-2xl">
-                <p className="text-[14px] dark:text-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, minus!</p>
+                <p className="mb-2 text-[14px] dark:text-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, minus!</p>
+                <div className="flex items-end gap-x-2 my-1">
+                    <PiStudentFill className="text-[20px] dark:text-gray-200" />
+                    <p className="dark:text-gray-200">
+                        {props.course.studentsCount} {props.course.studentsCount === 1 ? "student" : "students"}
+                    </p>
+                </div>
                 <div className="flex items-center gap-x-2 my-1">
                     <Rating
                         iconsCount={5}

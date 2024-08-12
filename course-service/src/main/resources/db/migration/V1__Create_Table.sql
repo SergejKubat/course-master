@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS public.course
     video_url character varying(255) COLLATE pg_catalog."default" NOT NULL,
     price double precision NOT NULL,
     average_rating double precision NOT NULL,
+    students_count integer NOT NULL,
     is_public boolean NOT NULL,
     created_at timestamp(6) without time zone,
     updated_at timestamp(6) without time zone,

@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 
 import FlagProvider from "@unleash/proxy-client-react";
 
+import { AppProvider } from "./contexts/AppContext";
+
 import App from "./App";
 
 import "./index.css";
@@ -17,7 +19,9 @@ const config = {
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <FlagProvider config={config}>
-            <App />
+            <AppProvider>
+                <App />
+            </AppProvider>
         </FlagProvider>
     </React.StrictMode>
 );

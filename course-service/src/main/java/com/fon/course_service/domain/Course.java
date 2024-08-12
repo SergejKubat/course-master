@@ -41,6 +41,9 @@ public class Course {
     @Column(name = "average_rating", nullable = false)
     private double averageRating;
 
+    @Column(name = "students_count", nullable = false)
+    private int studentsCount;
+
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 

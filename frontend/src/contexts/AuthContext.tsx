@@ -23,7 +23,7 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [account, setAccount] = useState<IAccountResponse | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const getAccount = async (token: string) => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/accounts/me`, {

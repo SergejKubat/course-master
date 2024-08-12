@@ -19,4 +19,6 @@ public class CoursesResponse {
     private double price;
 
     private double averageRating;
+
+    private int studentsCount;
 }

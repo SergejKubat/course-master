@@ -1,7 +1,6 @@
 package com.fon.course_service.service.impl;
 
 import com.fon.course_service.client.AuthClient;
-import com.fon.course_service.client.PaymentClient;
 import com.fon.course_service.domain.Category;
 import com.fon.course_service.domain.Course;
 import com.fon.course_service.dto.request.course.CourseRequest;
@@ -9,7 +8,6 @@ import com.fon.course_service.dto.response.account.AccountResponse;
 import com.fon.course_service.dto.response.course.CourseMentorResponse;
 import com.fon.course_service.dto.response.course.CourseResponse;
 import com.fon.course_service.dto.response.course.CoursesResponse;
-import com.fon.course_service.dto.response.transaction.TransactionResponse;
 import com.fon.course_service.exception.BadRequestException;
 import com.fon.course_service.exception.ResourceNotFoundException;
 import com.fon.course_service.repository.CategoryRepository;
@@ -32,7 +30,6 @@ public class CourseServiceImpl implements CourseService {
     private final CategoryRepository categoryRepository;
 
     private final AuthClient authClient;
-    private final PaymentClient paymentClient;
 
     private final DtoMapper dtoMapper;
     private final EntityMapper entityMapper;
@@ -42,14 +39,12 @@ public class CourseServiceImpl implements CourseService {
     public CourseServiceImpl(CourseRepository courseRepository,
                              CategoryRepository categoryRepository,
                              AuthClient authClient,
-                             PaymentClient paymentClient,
                              DtoMapper dtoMapper,
                              EntityMapper entityMapper,
                              Unleash unleash) {
         this.courseRepository = courseRepository;
         this.categoryRepository = categoryRepository;
         this.authClient = authClient;
-        this.paymentClient = paymentClient;
         this.dtoMapper = dtoMapper;
         this.entityMapper = entityMapper;
         this.unleash = unleash;
@@ -77,12 +72,15 @@ public class CourseServiceImpl implements CourseService {
     public List<CoursesResponse> getPopular() {
         boolean popularCoursesEnabled = unleash.isEnabled(FeatureFlags.POPULAR_COURSES);
 
-        if (!popularCoursesEnabled) {
-            throw new UnsupportedOperationException();
-        }
+        Pageable pageable;
 
-        Pageable pageable = PageRequest.of(0, 5,
-                Sort.by(Sort.Direction.DESC, "averageRating"));
+        if (popularCoursesEnabled) {
+            pageable = PageRequest.of(0, 5,
+                    Sort.by(Sort.Direction.DESC, "studentsCount"));
+        } else {
+            pageable = PageRequest.of(0, 5,
+                    Sort.by(Sort.Direction.DESC, "averageRating"));
+        }
 
         return courseRepository.findAll(pageable).stream().map(dtoMapper::mapToCoursesResponse).toList();
     }
@@ -110,11 +108,6 @@ public class CourseServiceImpl implements CourseService {
                 accountResponse.getAvatar());
 
         courseResponse.setMentor(courseMentorResponse);
-
-        // get students (transactions) count
-        List<TransactionResponse> transactions = paymentClient.getCourseTransactions(course.getId());
-
-        courseResponse.setStudentsCount(transactions.size());
 
         return courseResponse;
     }

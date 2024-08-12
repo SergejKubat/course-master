@@ -5,6 +5,7 @@ import { enqueueSnackbar } from "notistack";
 import { useAuth } from "../contexts/AuthContext";
 
 import AccountDetails from "../layouts/account/AccountDetails";
+import AccountPreferences from "../layouts/account/AccountPreferences";
 import AccountSecurity from "../layouts/account/AccountSecurity";
 
 import Spinner from "../components/Spinner";
@@ -115,6 +116,7 @@ const MyAccountPage = () => {
                 updating={updating}
                 saveChanges={saveChanges}
             />
+            <AccountPreferences />
             <AccountSecurity />
         </section>
     );

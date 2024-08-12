@@ -9,8 +9,6 @@ export const SEARCH_CATEGORY_COURSES: string = "searchCategoryCourses";
 
 export const SEARCH_AUTHOR_COURSES: string = "searchAuthorCourses";
 
-export const POPULAR_COURSES: string = "popularCourses";
-
 export const RECOMMENDED_COURSES: string = "recommendedCourses";
 
 export const STRONG_PASSWORD_POLICY: string = "strongPasswordPolicy";

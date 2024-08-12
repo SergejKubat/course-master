@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 
-import { useFlag } from "@unleash/proxy-client-react";
-
 import CategoryCard from "../components/card/CategoryCard";
 import CourseCard from "../components/card/CourseCard";
 import Spinner from "../components/Spinner";
@@ -9,16 +7,12 @@ import Spinner from "../components/Spinner";
 import ICategoriesResponse from "../models/responses/ICategoriesResponse";
 import ICoursesResponse from "../models/responses/ICoursesResponse";
 
-import { POPULAR_COURSES } from "../constants";
-
 import Logo from "../assets/logo.png";
 
 const HomePage = () => {
     const [categories, setCategories] = useState<ICategoriesResponse[]>([]);
     const [popularCourses, setPopularCourses] = useState<ICoursesResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-
-    const popularCoursesEnabled = useFlag(POPULAR_COURSES);
 
     const getCategories = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/categories/`, { method: "GET" });
@@ -42,13 +36,10 @@ const HomePage = () => {
 
     useEffect(() => {
         getCategories().then();
-
-        if (popularCoursesEnabled) {
-            getPopularCourses().then();
-        }
+        getPopularCourses().then();
 
         setLoading(false);
-    }, [popularCoursesEnabled]);
+    }, []);
 
     if (loading) return <Spinner />;
 
@@ -78,16 +69,14 @@ const HomePage = () => {
                 </div>
             </div>
 
-            {popularCoursesEnabled ? (
-                <div>
-                    <h2 className="mb-5 text-[28px] text-center">Popular Courses</h2>
-                    <div className="flex flex-wrap justify-center gap-5">
-                        {popularCourses.map((popularCourse) => (
-                            <CourseCard key={popularCourse.id} course={popularCourse} />
-                        ))}
-                    </div>
+            <div>
+                <h2 className="mb-5 text-[28px] text-center">Popular Courses</h2>
+                <div className="flex flex-wrap justify-center gap-5">
+                    {popularCourses.map((popularCourse) => (
+                        <CourseCard key={popularCourse.id} course={popularCourse} />
+                    ))}
                 </div>
-            ) : null}
+            </div>
         </section>
     );
 };
