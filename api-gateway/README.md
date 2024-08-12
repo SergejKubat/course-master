@@ -1,7 +1,7 @@
 # API Gateway
 
-This project serves as an API Gateway for managing three distinct services: Auth, Course, and Payment. 
-Each service is designed to handle specific functionalities, and the API Gateway aggregates their endpoints under a 
+This project serves as an API Gateway for managing three distinct services: Auth, Course, and Payment.
+Each service is designed to handle specific functionalities, and the API Gateway aggregates their endpoints under a
 unified entry point.
 
 ## Table of Contents

@@ -10,12 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseResponse {
-    private long id;
-
     public CourseCategoryResponse category;
-
     public CourseMentorResponse mentor;
-
+    private long id;
     private String title;
 
     private String description;
