@@ -79,7 +79,7 @@ const AccountPage = () => {
                         <h1 className="mt-3 font-bold text-[30px]">
                             {account.firstName} {account.lastName}
                         </h1>
-                        <p className="text-[14px]">{account.occupation}</p>
+                        <p className="text-center text-[14px]">{account.occupation}</p>
                     </div>
                 </div>
 
