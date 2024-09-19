@@ -1,30 +1,45 @@
-# React + TypeScript + Vite
+# CourseMaster Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React application for CourseMaster project.
 
-Currently, two official plugins are available:
+## Prerequisites
 
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   [Node.js](https://nodejs.org/en/download/prebuilt-installer)
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Clone the repository:**
 
--   Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-    // other rules...
-    parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-        project: ["./tsconfig.json", "./tsconfig.node.json"],
-        tsconfigRootDir: __dirname
-    }
-};
+```bash
+$ git clone https://github.com/SergejKubat/course-master
 ```
 
--   Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
--   Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
--   Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. **Navigate to the project directory:**
+
+```bash
+$ cd frontend
+```
+
+3. **Install dependencies:**
+
+```bash
+$ npm install
+```
+
+4. **Run the application:**
+
+```bash
+$ npm run dev
+```
+
+The application will start, and you should see output indicating that the server is listening.
+
+5. **Open your web browser:**
+
+Navigate to http://localhost:3000/ to access the application.
+
+6. **Build the application**
+
+```bash
+$ npm run build
+```
